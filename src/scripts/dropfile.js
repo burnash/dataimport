@@ -1,3 +1,8 @@
+'use strict';
+
+var Papa = require('papaparse');
+var $ = require('jquery');
+
 var DropFile = function DropFile(opts) {
 
     function handleDrop(e) {
