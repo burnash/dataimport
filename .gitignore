@@ -1,0 +1,10 @@
+node_modules
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+www
