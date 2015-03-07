@@ -14,10 +14,11 @@ var DEV_ROOT = 'build/dev';
 var src = {
     jquery: 'vendor_modules/jquery.min.js',
     vendor_js: 'vendor_modules/**/*.js',
+    vendor_css: 'vendor_modules/**/*.css',
     js:   'src/scripts/**/*.js',
-    html: 'src/*.html'
+    css: 'src/css/**/*.css',
+    html: 'src/*.html',
 };
-
 
 gulp.task('hint', function () {
     return gulp.src([
@@ -27,7 +28,6 @@ gulp.task('hint', function () {
         .pipe(hint.reporter(stylish))
         .pipe(hint.reporter('fail'));
 });
-
 
 gulp.task('scripts:dev', ['hint'], function () {
     return gulp.src([src.jquery, src.vendor_js, src.js])
@@ -39,6 +39,12 @@ gulp.task('scripts:dev', ['hint'], function () {
 
 });
 
+gulp.task('styles:dev', ['hint'], function () {
+    return gulp.src([src.vendor_css, src.css])
+        .pipe(concat('all.css'))
+        .pipe(gulp.dest(DEV_ROOT))
+        .pipe(reload({stream: true}));
+});
 
 gulp.task('html:dev', function () {
     return gulp.src('src/dev.html')
@@ -54,6 +60,7 @@ gulp.task('serve', function () {
     });
 
     gulp.watch(src.js, ['scripts:dev']);
+    gulp.watch(src.css, ['styles:dev']);
     gulp.watch(src.html, ['html:dev']);
 });
 
