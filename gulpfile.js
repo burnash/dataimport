@@ -6,8 +6,8 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     browserSync = require('browser-sync'),
     reload = browserSync.reload,
-    browserify = require("browserify"),
-    source = require("vinyl-source-stream");
+    concat = require('gulp-concat'),
+    sourcemaps = require('gulp-sourcemaps');
 
 var DEV_ROOT = 'build/dev';
 
@@ -28,11 +28,13 @@ gulp.task('hint', function () {
 
 
 gulp.task('scripts:dev', ['hint'], function () {
-    return browserify({entries: ["./src/scripts/main.js"]})
-        .bundle()
-        .pipe(source("bundle.js"))
+    return gulp.src(src.js)
+        .pipe(sourcemaps.init())
+        .pipe(concat('all.js'))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest(DEV_ROOT))
         .pipe(reload({stream: true}));
+
 });
 
 
@@ -52,5 +54,4 @@ gulp.task('serve', function () {
     gulp.watch(src.js, ['scripts:dev']);
     gulp.watch(src.html, ['html:dev']);
 });
-
 

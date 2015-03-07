@@ -1,7 +1,5 @@
+/* global Papa,$ */
 'use strict';
-
-var Papa = require('papaparse');
-var $ = require('jquery');
 
 var DropFile = function DropFile(opts) {
 
@@ -50,4 +48,3 @@ var DropFile = function DropFile(opts) {
     }
 };
 
-module.exports = DropFile;
