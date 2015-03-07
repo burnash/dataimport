@@ -12,6 +12,8 @@ var gulp = require('gulp'),
 var DEV_ROOT = 'build/dev';
 
 var src = {
+    jquery: 'vendor_modules/jquery.min.js',
+    vendor_js: 'vendor_modules/**/*.js',
     js:   'src/scripts/**/*.js',
     html: 'src/*.html'
 };
@@ -28,7 +30,7 @@ gulp.task('hint', function () {
 
 
 gulp.task('scripts:dev', ['hint'], function () {
-    return gulp.src(src.js)
+    return gulp.src([src.jquery, src.vendor_js, src.js])
         .pipe(sourcemaps.init())
         .pipe(concat('all.js'))
         .pipe(sourcemaps.write())
