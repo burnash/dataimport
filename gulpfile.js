@@ -7,39 +7,52 @@ var gulp = require('gulp'),
     browserSync = require('browser-sync'),
     reload = browserSync.reload,
     concat = require('gulp-concat'),
+    debug = require('gulp-debug'),
     sourcemaps = require('gulp-sourcemaps');
 
 var DEV_ROOT = 'build/dev';
 
 var src = {
-    jquery: 'vendor_modules/jquery.min.js',
-    vendor_js: 'vendor_modules/**/*.js',
     vendor_css: 'vendor_modules/**/*.css',
-    js:   'src/scripts/**/*.js',
+    vendor_js: [
+        'vendor_modules/jquery.min.js',
+        'vendor_modules/handsontable.full.min.js'
+    ],
+    js: [
+        'src/scripts/sheet.js',
+        'src/scripts/dropfile.js',
+        'src/scripts/dataimport.js',
+        'src/scripts/main.js'
+    ],
     css: 'src/css/**/*.css',
     html: 'src/*.html',
 };
 
 gulp.task('hint', function () {
-    return gulp.src([
-        src.js,
-        "gulpfile.js"
-    ]).pipe(hint('.jshintrc'))
+    return gulp.src(src.js).pipe(hint('.jshintrc'))
         .pipe(hint.reporter(stylish))
         .pipe(hint.reporter('fail'));
 });
 
-gulp.task('scripts:dev', ['hint'], function () {
-    return gulp.src([src.jquery, src.vendor_js, src.js])
+gulp.task('scripts:dev', ['hint', 'vendor:dev'], function () {
+    return gulp.src(src.js)
+        .pipe(debug())
         .pipe(sourcemaps.init())
         .pipe(concat('all.js'))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(DEV_ROOT))
         .pipe(reload({stream: true}));
-
 });
 
-gulp.task('styles:dev', ['hint'], function () {
+gulp.task('vendor:dev', function () {
+    return gulp.src(src.vendor_js)
+        .pipe(sourcemaps.init())
+        .pipe(concat('vendor.js'))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest(DEV_ROOT));
+});
+
+gulp.task('styles:dev', function () {
     return gulp.src([src.vendor_css, src.css])
         .pipe(concat('all.css'))
         .pipe(gulp.dest(DEV_ROOT))
@@ -52,7 +65,6 @@ gulp.task('html:dev', function () {
           .pipe(gulp.dest(DEV_ROOT))
           .pipe(reload({stream: true}));
 });
-
 
 gulp.task('serve', function () {
     browserSync({
