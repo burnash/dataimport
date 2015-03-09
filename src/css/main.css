@@ -1,36 +1,88 @@
 body {
-    font-family: Helvetica, Arial, FreeSans, sans-serif;
+    font-family:Helvetica,Arial,FreeSans,sans-serif
 }
-#drop{
-  border:2px dashed #bbb;
-  -moz-border-radius:5px;
-  -webkit-border-radius:5px;
-  border-radius:5px;
-  padding:25px;
-  text-align:center;
-  width:128px;
-  font:20pt bold, Sans-Serif;color:#bbb;
+
+#drop {
+    border:2px dashed #bbb;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+    padding:25px;
+    text-align:center;
+    width:128px;
+    font:20pt bold,Sans-Serif;
+    color:#bbb
 }
 
 #left {
-  width:188px;
-  margin-left: 20px;
-  margin-top: 20px;
+    width:188px;
+    margin-left:20px;
+    margin-top:20px
 }
 
 #right {
-  position:absolute;
-  left:200px;
+    position:absolute;
+    left:200px
 }
 
 #header {
-  height:168px;
+    height:168px
 }
 
 .handsontable {
-  margin-bottom: 10px;
-  color: #000;
-  z-index: 2;
-  font-size: 12px;
+    margin-bottom:10px;
+    color:#000;
+    z-index:2;
+    font-size:12px
 }
 
+.changeType {
+    border:1px solid #bbb;
+    color:#bbb;
+    background:#eee;
+    border-radius:2px;
+    padding:2px;
+    font-size:9px;
+    float:right;
+    line-height:9px;
+    margin:3px 3px 0 0
+}
+
+.changeType:hover {
+    border:1px solid #777;
+    color:#777;
+    cursor:pointer
+}
+
+.changeType.pressed {
+    background-color:#999
+}
+
+.changeTypeMenu {
+    position:absolute;
+    border:1px solid #ccc;
+    margin-top:18px;
+    box-shadow:0 1px 3px -1px #323232;
+    background:#fff;
+    padding:0;
+    display:none;
+    z-index:10
+}
+
+.changeTypeMenu li {
+    text-align:left;
+    list-style:none;
+    padding:2px 20px;
+    cursor:pointer;
+    margin-bottom:0
+}
+
+.changeTypeMenu li.active:before {
+    content:"\2714";
+    margin-left:-15px;
+    margin-right:3px
+}
+
+.changeTypeMenu li:hover {
+    background:#eee
+}
