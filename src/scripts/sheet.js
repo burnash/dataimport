@@ -39,49 +39,6 @@
     });
   }
 
-  function buildMenu(activeCellType) {
-    var
-      menu = document.createElement('UL'),
-      types = ['text', 'numeric', 'date'],
-      item,
-      len,
-      i;
-
-    menu.className = 'changeTypeMenu';
-
-    for (i = 0, len = types.length; i < len; i += 1) {
-      item = document.createElement('LI');
-      item.innerText = types[i];
-      item.data = {
-        'colType': types[i]
-      };
-
-      if (activeCellType === types[i]) {
-        item.className = 'active';
-      }
-      menu.appendChild(item);
-    }
-
-    return menu;
-  }
-
-  // function buildButton() {
-  //   var button = document.createElement('BUTTON');
-
-  //   button.innerHTML = '\u25BC';
-  //   button.className = 'changeType';
-
-  //   return button;
-  // }
-
-  /** Handsontable magic
-  function boldRenderer(instance, td, row, col, prop, value, cellProperties) {
-    Handsontable.TextCell.renderer.apply(this, arguments);
-    $(td).css({
-      'font-weight': 'bold'
-    });
-  };
-  */
 
   var boldRenderer = function (
     instance, td, row, col, prop, value, cellProperties) { // jshint ignore:line
@@ -89,7 +46,6 @@
     Handsontable.renderers.TextRenderer.apply(this, arguments);
     td.style.fontWeight = 'bold';
   };
-
 
   function setColumnType(i, type, instance) {
     console.log(i, type, instance);
@@ -109,6 +65,36 @@
     this.fields = opts.fields;
 
     var self = this;
+
+    function buildMenu(activeCellType) {
+      var
+        menu = document.createElement('UL'),
+        items,
+        item,
+        len,
+        i;
+
+      items = self.fields.map(function (x) {
+        return x.name;
+      });
+
+      menu.className = 'changeTypeMenu';
+
+      for (i = 0, len = items.length; i < len; i += 1) {
+        item = document.createElement('LI');
+        item.innerText = items[i];
+        item.data = {
+          'colType': items[i]
+        };
+
+        if (activeCellType === items[i]) {
+          item.className = 'active';
+        }
+        menu.appendChild(item);
+      }
+
+      return menu;
+    }
 
     this.hot = new Handsontable(container, {
       stretchH: 'all',
@@ -147,7 +133,9 @@
         });
       },
       cells: function (r) {
-        if (r === 0) this.renderer = boldRenderer;
+        if (r === 0) {
+          this.renderer = boldRenderer;
+        }
       },
 
     });

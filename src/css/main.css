@@ -67,6 +67,13 @@ body {
   border-color: #ccc;
 }
 
+.btn-default.active, .btn-default.focus, .btn-default:active, .btn-default:focus, .btn-default:hover, .open>.dropdown-toggle.btn-default {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+
 .caret {
   display: inline-block;
   width: 0;
@@ -78,29 +85,6 @@ body {
   border-left: 4px solid transparent;
 }
 
-
-
-.changeType {
-    border:1px solid #bbb;
-    color:#bbb;
-    background:#eee;
-    border-radius:2px;
-    padding:2px;
-    font-size:9px;
-    float:right;
-    line-height:9px;
-    margin:3px 3px 0 0
-}
-
-.changeType:hover {
-    border:1px solid #777;
-    color:#777;
-    cursor:pointer
-}
-
-.changeType.pressed {
-    background-color:#999
-}
 
 .changeTypeMenu {
     position:absolute;
