@@ -16,13 +16,15 @@ body {
 
 #left {
     width:188px;
-    margin-left:20px;
-    margin-top:20px
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 40px;
+    float: left;
 }
 
 #right {
-    position:absolute;
-    left:200px
+    margin-top: 40px;
+    margin-left: 40px;
 }
 
 #header {
@@ -35,6 +37,48 @@ body {
     z-index:2;
     font-size:12px
 }
+
+
+.btn {
+  display: inline-block;
+  padding: 5px 12px;
+  margin-bottom: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+
+
 
 .changeType {
     border:1px solid #bbb;

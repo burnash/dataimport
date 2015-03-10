@@ -1,20 +1,16 @@
-/*global window */
+/*global window, Sheet*/
 
-(function (window) {
+(function (window, Sheet) {
   'use strict';
 
-  var DataImport = function (sheet, opts) {
+  var DataImport = function (containerElement, opts) {
     opts = opts || {};
-    this.sheet = sheet;
+    this.data = opts.data;
     this.fields = opts.fields;
 
-    this.sheet.setFields(this.fields);
-  };
-
-  DataImport.prototype.render = function (data) {
-    this.sheet.loadData(data);
+    this.sheet = new Sheet(containerElement, opts);
   };
 
   window.DataImport = DataImport;
 
-}(window));
+}(window, Sheet));
