@@ -3,57 +3,48 @@
 (function (window, document, Handsontable) {
   'use strict';
 
-  function addButtonMenuEvent(button, menu) {
-    Handsontable.Dom.addEvent(button, 'click', function (event) {
-      var columnDropdownMenu, position, removeMenu, i, len;
-
-      document.body.appendChild(menu);
-
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
-      columnDropdownMenu = document.querySelectorAll('.columnDropdownMenu');
-
-      for (i = 0, len = columnDropdownMenu.length; i < len; i += 1) {
-        columnDropdownMenu[i].style.display = 'none';
-      }
-      menu.style.display = 'block';
-      position = button.getBoundingClientRect();
-
-      menu.style.top = (position.top +
-        (window.scrollY || window.pageYOffset)) + 12 + 'px';
-      menu.style.left = (position.left) + 'px';
-
-      removeMenu = function (event) {
-        if (event.target.nodeName === 'LI' &&
-          event
-          .target
-          .parentNode.className.indexOf('columnDropdownMenu') !== -1) {
-          if (menu.parentNode) {
-            menu.parentNode.removeChild(menu);
-          }
-        }
-      };
-      Handsontable.Dom.removeEvent(document, 'click', removeMenu);
-      Handsontable.Dom.addEvent(document, 'click', removeMenu);
-    });
-  }
-
-
-  var boldRenderer = function (
-    instance, td, row, col, prop, value, cellProperties) { // jshint ignore:line
-
-    Handsontable.renderers.TextRenderer.apply(this, arguments);
-    td.style.fontWeight = 'bold';
-  };
-
-
-  var Sheet = function (container, options) {
+  function Sheet(container, options) {
     options = options || {};
     this.data = options.data;
     this.fields = options.fields;
 
     var self = this;
+
+    function addButtonMenuEvent(button, menu) {
+      Handsontable.Dom.addEvent(button, 'click', function (event) {
+        var columnDropdownMenu, position, removeMenu, i, len;
+
+        document.body.appendChild(menu);
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        columnDropdownMenu = document.querySelectorAll('.columnDropdownMenu');
+
+        for (i = 0, len = columnDropdownMenu.length; i < len; i += 1) {
+          columnDropdownMenu[i].style.display = 'none';
+        }
+
+        menu.style.display = 'block';
+        position = button.getBoundingClientRect();
+
+        menu.style.top = (position.top +
+          (window.scrollY || window.pageYOffset)) + 12 + 'px';
+        menu.style.left = (position.left) + 'px';
+
+        removeMenu = function (event) {
+          if (event.target.nodeName === 'LI' && event.target.parentNode
+              .className.indexOf('columnDropdownMenu') !== -1) {
+            if (menu.parentNode) {
+              menu.parentNode.removeChild(menu);
+            }
+          }
+        };
+
+        Handsontable.Dom.removeEvent(document, 'click', removeMenu);
+        Handsontable.Dom.addEvent(document, 'click', removeMenu);
+      });
+    }
 
     function buildMenu(activeCellType) {
       var
@@ -77,6 +68,7 @@
         if (activeCellType === items[i]) {
           item.className = 'active';
         }
+
         menu.appendChild(item);
       }
 
@@ -95,6 +87,12 @@
       // });
     }
 
+    var boldRenderer = function (
+      instance, td, row, col, prop, value, cellProperties) { // jshint ignore:line
+
+      Handsontable.renderers.TextRenderer.apply(this, arguments);
+      td.style.fontWeight = 'bold';
+    };
 
     this.hot = new Handsontable(container, {
       stretchH: 'all',
@@ -114,6 +112,7 @@
         if (self.fields[col] && self.fields[col].id) {
           name = self.fields[col].name;
         }
+
         return '<button class="btn btn-default dropdown-toggle"' +
           ' type="button" id="dropdownMenu1" data-toggle="dropdown"' +
           ' aria-expanded="true">' + name +
@@ -132,14 +131,14 @@
           }
         });
       },
+
       cells: function (r) {
         if (r === 0) {
           this.renderer = boldRenderer;
         }
-      },
-
+      }
     });
-  };
+  }
 
 
   Sheet.prototype.setFields = function (fields) {
@@ -157,6 +156,7 @@
           colName = colHeaders[col];
 
         console.log(col, colHeaders[col]);
+
         if (col >= 0 && colName) {
           txt = colName + ' <button class="changeType">▼</button>';
         }
