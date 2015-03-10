@@ -5,30 +5,30 @@
 
   function addButtonMenuEvent(button, menu) {
     Handsontable.Dom.addEvent(button, 'click', function (event) {
-      var changeTypeMenu, position, removeMenu, i, len;
+      var columnDropdownMenu, position, removeMenu, i, len;
 
       document.body.appendChild(menu);
 
       event.preventDefault();
       event.stopImmediatePropagation();
 
-      changeTypeMenu = document.querySelectorAll('.changeTypeMenu');
+      columnDropdownMenu = document.querySelectorAll('.columnDropdownMenu');
 
-      for (i = 0, len = changeTypeMenu.length; i < len; i += 1) {
-        changeTypeMenu[i].style.display = 'none';
+      for (i = 0, len = columnDropdownMenu.length; i < len; i += 1) {
+        columnDropdownMenu[i].style.display = 'none';
       }
       menu.style.display = 'block';
       position = button.getBoundingClientRect();
 
       menu.style.top = (position.top +
-        (window.scrollY || window.pageYOffset)) + 2 + 'px';
+        (window.scrollY || window.pageYOffset)) + 12 + 'px';
       menu.style.left = (position.left) + 'px';
 
       removeMenu = function (event) {
         if (event.target.nodeName === 'LI' &&
           event
           .target
-          .parentNode.className.indexOf('changeTypeMenu') !== -1) {
+          .parentNode.className.indexOf('columnDropdownMenu') !== -1) {
           if (menu.parentNode) {
             menu.parentNode.removeChild(menu);
           }
@@ -47,17 +47,6 @@
     td.style.fontWeight = 'bold';
   };
 
-  function setColumnType(i, type, instance) {
-    console.log(i, type, instance);
-    // columns[i].type = type;
-    // instance.updateSettings({
-    //   columns: columns
-    // });
-    // instance.validateCells(function () {
-    //   instance.render();
-    // });
-
-  }
 
   var Sheet = function (container, opts) {
     opts = opts || {};
@@ -74,17 +63,15 @@
         len,
         i;
 
-      items = self.fields.map(function (x) {
-        return x.name;
-      });
+      items = self.fields;
 
-      menu.className = 'changeTypeMenu';
+      menu.className = 'columnDropdownMenu';
 
       for (i = 0, len = items.length; i < len; i += 1) {
         item = document.createElement('LI');
-        item.innerText = items[i];
+        item.innerText = items[i].name;
         item.data = {
-          'colType': items[i]
+          'fieldId': items[i].id
         };
 
         if (activeCellType === items[i]) {
@@ -95,6 +82,19 @@
 
       return menu;
     }
+
+    function setColumnName(i, type, instance) {
+      console.log(i, type, instance);
+      // TODO: create this.matchedFields holding currently selected fields
+      // columns[i].type = type;
+      // instance.updateSettings({
+      //   columns: columns
+      // });
+      // instance.validateCells(function () {
+      //   instance.render();
+      // });
+    }
+
 
     this.hot = new Handsontable(container, {
       stretchH: 'all',
@@ -122,13 +122,13 @@
 
       afterGetColHeader: function (col, TH) {
         var instance = this,
-          menu = buildMenu(self.fields[col] && self.fields[col].id);
+          menu = buildMenu(self.fields[col]);
 
         addButtonMenuEvent(TH.firstChild.firstChild.firstChild, menu);
 
         Handsontable.Dom.addEvent(menu, 'click', function (event) {
           if (event.target.nodeName === 'LI') {
-            setColumnType(col, event.target.data.colType, instance);
+            setColumnName(col, event.target.data.fieldId, instance);
           }
         });
       },
