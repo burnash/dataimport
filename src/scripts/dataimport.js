@@ -3,12 +3,12 @@
 (function (window, Sheet) {
   'use strict';
 
-  var DataImport = function (containerElement, opts) {
-    opts = opts || {};
-    this.data = opts.data;
-    this.fields = opts.fields;
+  var DataImport = function (containerElement, options) {
+    options = options || {};
+    this.data = options.data;
+    this.fields = options.fields;
 
-    this.sheet = new Sheet(containerElement, opts);
+    this.sheet = new Sheet(containerElement, options);
   };
 
   window.DataImport = DataImport;

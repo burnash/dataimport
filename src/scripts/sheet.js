@@ -48,10 +48,10 @@
   };
 
 
-  var Sheet = function (container, opts) {
-    opts = opts || {};
-    this.data = opts.data;
-    this.fields = opts.fields;
+  var Sheet = function (container, options) {
+    options = options || {};
+    this.data = options.data;
+    this.fields = options.fields;
 
     var self = this;
 
