@@ -140,37 +140,6 @@
     });
   }
 
-
-  Sheet.prototype.setFields = function (fields) {
-    this.fields = fields;
-
-    var colHeaders = this.fields.map(function (x) {
-      return x.name;
-    });
-
-    this.hot.updateSettings({
-      colWidths: 200,
-
-      colHeaders: function (col) {
-        var txt = '',
-          colName = colHeaders[col];
-
-        console.log(col, colHeaders[col]);
-
-        if (col >= 0 && colName) {
-          txt = colName + ' <button class="changeType">▼</button>';
-        }
-        return txt;
-      }
-    });
-
-    // var hot = this.hot;
-    // hot.validateCells(function () {
-    //    hot.render();
-    // });
-
-  };
-
   window.Sheet = Sheet;
 
 }(window, document, Handsontable));
