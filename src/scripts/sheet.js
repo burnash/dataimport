@@ -73,19 +73,16 @@
     }
 
     function setColumnMapping(columnIndex, fieldId, instance) {
+      var mapping = _this.mapping, index;
+
+      index = mapping.indexOf(fieldId);
+
+      if (index > -1) {
+        mapping[index] = mapping[columnIndex];
+      }
+
       _this.mapping[columnIndex] = fieldId;
       instance.render();
-
-      // instance.validateCells(function () {
-      // });
-
-      // columns[i].type = type;
-      // instance.updateSettings({
-      //   columns: columns
-      // });
-      // instance.validateCells(function () {
-      //   instance.render();
-      // });
     }
 
     var boldRenderer = function (
