@@ -5,10 +5,11 @@
 
   function Sheet(container, options) {
     options = options || {};
-    this.data = options.data;
+    this.mapping = options.mapping;
     this.fields = options.fields;
+    this.data = options.data;
 
-    var self = this;
+    var _this = this;
 
     function addButtonMenuEvent(button, menu) {
       Handsontable.Dom.addEvent(button, 'click', function (event) {
@@ -34,7 +35,7 @@
 
         removeMenu = function (event) {
           if (event.target.nodeName === 'LI' && event.target.parentNode
-              .className.indexOf('columnDropdownMenu') !== -1) {
+            .className.indexOf('columnDropdownMenu') !== -1) {
             if (menu.parentNode) {
               menu.parentNode.removeChild(menu);
             }
@@ -46,38 +47,38 @@
       });
     }
 
-    function buildMenu(activeCellType) {
+    function buildMenu(items, activeId) {
       var
         menu = document.createElement('UL'),
-        items,
-        item,
-        len,
-        i;
-
-      items = self.fields;
+        li,
+        id;
 
       menu.className = 'columnDropdownMenu';
 
-      for (i = 0, len = items.length; i < len; i += 1) {
-        item = document.createElement('LI');
-        item.innerText = items[i].name;
-        item.data = {
-          'fieldId': items[i].id
+      for (id in items) {
+        li = document.createElement('LI');
+        li.innerText = items[id].name;
+        li.data = {
+          'fieldId': id
         };
 
-        if (activeCellType === items[i]) {
-          item.className = 'active';
+        if (activeId === id) {
+          li.className = 'active';
         }
 
-        menu.appendChild(item);
+        menu.appendChild(li);
       }
 
       return menu;
     }
 
-    function setColumnName(i, type, instance) {
-      console.log(i, type, instance);
-      // TODO: create this.matchedFields holding currently selected fields
+    function setColumnMapping(columnIndex, fieldId, instance) {
+      _this.mapping[columnIndex] = fieldId;
+      instance.render();
+
+      // instance.validateCells(function () {
+      // });
+
       // columns[i].type = type;
       // instance.updateSettings({
       //   columns: columns
@@ -97,20 +98,19 @@
     this.hot = new Handsontable(container, {
       stretchH: 'all',
       rowHeaders: true,
-      data: self.data,
+      data: _this.data,
 
       width: 600,
       height: 400,
 
-      // colHeaders: self.fields.map(function (x) {
-      //   return x.name + '▼';
-      // }),
+      contextMenu: true,
 
       colHeaders: function (col) {
-        var name = '<span style="color: gray;">None</span>';
+        var fieldId = _this.mapping[col],
+          name = '<span style="color: gray;">None</span>';
 
-        if (self.fields[col] && self.fields[col].id) {
-          name = self.fields[col].name;
+        if (fieldId) {
+          name = _this.fields[fieldId].name;
         }
 
         return '<button class="btn btn-default dropdown-toggle"' +
@@ -121,13 +121,13 @@
 
       afterGetColHeader: function (col, TH) {
         var instance = this,
-          menu = buildMenu(self.fields[col]);
+          menu = buildMenu(_this.fields, _this.mapping[col]);
 
         addButtonMenuEvent(TH.firstChild.firstChild.firstChild, menu);
 
         Handsontable.Dom.addEvent(menu, 'click', function (event) {
           if (event.target.nodeName === 'LI') {
-            setColumnName(col, event.target.data.fieldId, instance);
+            setColumnMapping(col, event.target.data.fieldId, instance);
           }
         });
       },
