@@ -120,7 +120,6 @@
       },
 
       afterGetColHeader: function (col, TH) {
-        console.log('afterGetColHeader');
         var instance = this,
           menu = buildMenu(_this.fields, _this.mapping[col]);
 

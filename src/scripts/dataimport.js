@@ -16,7 +16,6 @@
       mapping[1] = 'subjectId';
       mapping[2] = 'imageType';
 
-      console.log(fields);
       return mapping;
     }
 
