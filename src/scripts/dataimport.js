@@ -29,6 +29,10 @@
     });
   };
 
+  DataImport.prototype.destroy = function () {
+    this.sheet.destroy();
+  };
+
   window.DataImport = DataImport;
 
 }(window, Sheet));

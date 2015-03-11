@@ -31,11 +31,11 @@
       }, 10);
     }
 
-    if (opts.drop.addEventListener) {
-      opts.drop.addEventListener('dragenter', handleDragover, false);
-      opts.drop.addEventListener('dragover', handleDragover, false);
-      opts.drop.addEventListener('dragleave', handleDragleave, false);
-      opts.drop.addEventListener('drop', handleDrop, false);
+    if (opts.target.addEventListener) {
+      opts.target.addEventListener('dragenter', handleDragover, false);
+      opts.target.addEventListener('dragover', handleDragover, false);
+      opts.target.addEventListener('dragleave', handleDragleave, false);
+      opts.target.addEventListener('drop', handleDrop, false);
     }
   };
 

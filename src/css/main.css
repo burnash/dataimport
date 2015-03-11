@@ -16,9 +16,7 @@ body {
 
 #left {
     width:188px;
-    margin-left: 40px;
-    margin-right: 40px;
-    margin-top: 40px;
+    margin: 40px;
     float: left;
 }
 

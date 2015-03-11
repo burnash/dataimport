@@ -100,8 +100,8 @@
       rowHeaders: true,
       data: _this.data,
 
-      width: 600,
-      height: 400,
+      width: 700,
+      height: 500,
 
       contextMenu: true,
 
@@ -159,6 +159,10 @@
       }
     });
   }
+
+  Sheet.prototype.destroy = function () {
+    this.hot.destroy();
+  };
 
   window.Sheet = Sheet;
 
