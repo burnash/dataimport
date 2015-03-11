@@ -49,9 +49,7 @@ gulp.task('scripts:dev', ['hint', 'vendor:dev'], function () {
 
 gulp.task('vendor:dev', function () {
   return gulp.src(src.vendorJS)
-    .pipe(sourcemaps.init())
     .pipe(concat('vendor.js'))
-    .pipe(sourcemaps.write())
     .pipe(gulp.dest(DEV_ROOT));
 });
 
