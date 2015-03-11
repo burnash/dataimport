@@ -56,24 +56,27 @@
       menu.className = 'columnDropdownMenu';
 
       for (id in items) {
-        li = document.createElement('LI');
-        li.innerText = items[id].name;
-        li.data = {
-          'fieldId': id
-        };
+        if (items.hasOwnProperty(id)) {
+          li = document.createElement('LI');
+          li.innerText = items[id].name;
+          li.data = {
+            'fieldId': id
+          };
 
-        if (activeId === id) {
-          li.className = 'active';
+          if (activeId === id) {
+            li.className = 'active';
+          }
+
+          menu.appendChild(li);
         }
-
-        menu.appendChild(li);
       }
 
       return menu;
     }
 
     function setColumnMapping(columnIndex, fieldId, instance) {
-      var mapping = _this.mapping, index;
+      var mapping = _this.mapping,
+        index;
 
       index = mapping.indexOf(fieldId);
 
