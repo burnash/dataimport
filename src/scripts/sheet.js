@@ -120,6 +120,7 @@
       },
 
       afterGetColHeader: function (col, TH) {
+        console.log('afterGetColHeader');
         var instance = this,
           menu = buildMenu(_this.fields, _this.mapping[col]);
 
@@ -130,6 +131,25 @@
             setColumnMapping(col, event.target.data.fieldId, instance);
           }
         });
+      },
+
+      afterCreateCol: function (index, amount) {
+        if (amount === 1) {
+          _this.mapping.splice(index, 0, null);
+        } else {
+          var args = [index, 0],
+            i;
+
+          for (i = 0; i < amount; i += 1) {
+            args.push(null);
+          }
+
+          _this.mapping.splice.apply(_this.mapping, args);
+        }
+      },
+
+      afterRemoveCol: function (index, amount) {
+        _this.mapping.splice(index, amount);
       },
 
       cells: function (r) {
