@@ -3,7 +3,7 @@
 (function (window) {
   'use strict';
 
-  var DropFile = function DropFile(opts) {
+  var dropFile = function (opts) {
 
     function handleDrop(e) {
       e.stopPropagation();
@@ -39,6 +39,6 @@
     }
   };
 
-  window.DropFile = DropFile;
+  window.dropFile = dropFile;
 
 }(window));

@@ -36,6 +36,19 @@
     });
   };
 
+  DataImport.prototype.validate = function (options) {
+    options = options || {};
+
+    var data = this.sheet.getData();
+    console.log(data);
+
+    if (data) {
+      options.complete(data);
+    } else {
+      options.fail(['no data']);
+    }
+  };
+
   DataImport.prototype.destroy = function () {
     this.sheet.destroy();
   };

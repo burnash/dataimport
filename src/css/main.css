@@ -29,6 +29,10 @@ body {
     height:168px
 }
 
+.results {
+    margin-bottom: 20px;
+}
+
 .handsontable {
     margin-bottom:10px;
     color:#000;

@@ -207,6 +207,10 @@
     });
   }
 
+  Sheet.prototype.getData = function () {
+    return this.hot.getData();
+  };
+
   Sheet.prototype.destroy = function () {
     this.hot.destroy();
   };
