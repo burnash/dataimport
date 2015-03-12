@@ -66,7 +66,7 @@
     function createListItem(options) {
       var li = document.createElement('LI');
       li.className = options.className;
-      li.innerText = options.innerText;
+      li.innerHTML = options.innerHTML;
       li.data = options.data;
 
       return li;
@@ -82,13 +82,12 @@
       for (id in items) {
         if (items.hasOwnProperty(id)) {
           menu.appendChild(createListItem({
-            innerText: items[id].name,
+            innerHTML: items[id].name,
             className: (activeId === id) ? 'active' : '',
             data: {
               'fieldId': id
             }
           }));
-
         }
       }
 
@@ -97,7 +96,7 @@
       }));
 
       menu.appendChild(createListItem({
-        innerText: 'Unset Field',
+        innerHTML: 'Unset Field',
         className: activeId ? '' : 'disabled',
         data: {
           'fieldId': null
