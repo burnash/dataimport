@@ -17,7 +17,8 @@ var src = {
   vendorJS: [
     'vendor_modules/jquery.min.js',
     'vendor_modules/handsontable.full.js',
-    'vendor_modules/papaparse.js'
+    'vendor_modules/papaparse.js',
+    'vendor_modules/fuse.js',
   ],
   js: [
     'src/scripts/sheet.js',

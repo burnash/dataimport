@@ -1,4 +1,4 @@
-/*global window, Sheet*/
+/*global window, Sheet, Fuse*/
 
 (function (window, Sheet) {
   'use strict';
@@ -9,7 +9,8 @@
     this.fields = options.fields;
 
     function mapFields(fields, data) {
-      var mapping = data[0].map(function () {
+      var mapping = data[0].map(function (x) {
+        console.log(x);
         return null;
       });
       mapping[0] = 'imageName';
@@ -17,6 +18,13 @@
       mapping[2] = 'imageType';
 
       return mapping;
+
+      /**
+      var fields = ["File Name", "Subject Id", "Image Type"];
+      var f = new Fuse(fields);
+      f.search('falen')
+
+      */
     }
 
     this.mapping = mapFields(this.fields, this.data);
@@ -34,4 +42,4 @@
 
   window.DataImport = DataImport;
 
-}(window, Sheet));
+}(window, Sheet, Fuse));

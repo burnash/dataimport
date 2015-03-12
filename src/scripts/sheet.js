@@ -11,6 +11,20 @@
 
     var _this = this;
 
+    function arrayToObject(array) {
+      var len = array.length,
+        obj = {},
+        i;
+
+      for (i = 0; i < len; i += 1) {
+        obj[array[i].id] = array[i];
+      }
+
+      return obj;
+    }
+
+    this.fieldById = arrayToObject(options.fields);
+
     function addButtonMenuEvent(button, menu) {
 
       Handsontable.Dom.addEvent(button, 'click', function (event) {
@@ -96,7 +110,7 @@
       }));
 
       menu.appendChild(createListItem({
-        innerHTML: 'Unset Field',
+        innerHTML: 'Reset Field',
         className: activeId ? '' : 'disabled',
         data: {
           'fieldId': null
@@ -145,7 +159,7 @@
           name = '<span style="color: gray;">None</span>';
 
         if (fieldId) {
-          name = _this.fields[fieldId].name;
+          name = _this.fieldById[fieldId].name;
         }
 
         return '<button class="btn btn-default dropdown-toggle"' +
@@ -156,7 +170,7 @@
 
       afterGetColHeader: function (col, TH) {
         var instance = this,
-          menu = buildMenu(_this.fields, _this.mapping[col]);
+          menu = buildMenu(_this.fieldById, _this.mapping[col]);
         addButtonMenuEvent(TH.firstChild.firstChild.firstChild, menu);
 
         Handsontable.Dom.addEvent(menu, 'click', function (event) {
