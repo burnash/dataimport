@@ -9,22 +9,22 @@
     this.fields = options.fields;
 
     function mapFields(fields, data) {
-      var mapping = data[0].map(function (x) {
-        console.log(x);
-        return null;
-      });
-      mapping[0] = 'imageName';
-      mapping[1] = 'subjectId';
-      mapping[2] = 'imageType';
+      var fuse = new Fuse(fields, {
+          keys: ['name']
+        }),
+
+        mapping = data[0].map(function (x) {
+          var result = fuse.search(x);
+          console.log(x, result);
+
+          if (result.length) {
+            return result[0].id;
+          }
+
+          return null;
+        });
 
       return mapping;
-
-      /**
-      var fields = ["File Name", "Subject Id", "Image Type"];
-      var f = new Fuse(fields);
-      f.search('falen')
-
-      */
     }
 
     this.mapping = mapFields(this.fields, this.data);
