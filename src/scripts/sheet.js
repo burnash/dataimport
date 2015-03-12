@@ -12,7 +12,9 @@
     var _this = this;
 
     function addButtonMenuEvent(button, menu) {
+
       Handsontable.Dom.addEvent(button, 'click', function (event) {
+        console.log('got click event', event);
         var columnDropdownMenu, position, removeMenu, i, len;
 
         document.body.appendChild(menu);
@@ -20,12 +22,19 @@
         event.preventDefault();
         event.stopImmediatePropagation();
 
+        if (menu.style.display === 'block') {
+          menu.style.display = 'none';
+          return;
+        }
+
         columnDropdownMenu = document.querySelectorAll('.columnDropdownMenu');
 
+        // Hide other menus
         for (i = 0, len = columnDropdownMenu.length; i < len; i += 1) {
           columnDropdownMenu[i].style.display = 'none';
         }
 
+        // Show this menu
         menu.style.display = 'block';
         position = button.getBoundingClientRect();
 
@@ -34,11 +43,15 @@
         menu.style.left = (position.left) + 'px';
 
         removeMenu = function (event) {
+          console.log('in remove menu');
+
           if (event.target.nodeName === 'LI' && event.target.parentNode
             .className.indexOf('columnDropdownMenu') !== -1) {
             if (menu.parentNode) {
               menu.parentNode.removeChild(menu);
             }
+          } else {
+            console.log(event.target.nodeName, event.target.parentNode);
           }
         };
 
