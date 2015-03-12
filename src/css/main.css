@@ -112,6 +112,14 @@ body {
     margin-bottom:0
 }
 
+.columnDropdownMenu .divider {
+  height: 1px;
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+  padding: 0px;
+}
+
 .columnDropdownMenu li.active:before {
     content:"\2714";
     margin-left:-15px;

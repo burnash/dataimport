@@ -87,6 +87,17 @@
         }
       }
 
+      li = document.createElement('LI');
+      li.className = 'divider';
+      menu.appendChild(li);
+
+      li = document.createElement('LI');
+      li.innerText = 'Unset Field';
+      li.data = {
+        'fieldId': null
+      };
+      menu.appendChild(li);
+
       return menu;
     }
 
@@ -94,13 +105,16 @@
       var mapping = _this.mapping,
         index;
 
-      index = mapping.indexOf(fieldId);
+      if (fieldId) {
+        index = mapping.indexOf(fieldId);
 
-      if (index > -1) {
-        mapping[index] = mapping[columnIndex];
+        if (index > -1) {
+          mapping[index] = mapping[columnIndex];
+        }
       }
 
       _this.mapping[columnIndex] = fieldId;
+
       instance.render();
     }
 
