@@ -63,40 +63,46 @@
       });
     }
 
+    function createListItem(options) {
+      var li = document.createElement('LI');
+      li.className = options.className;
+      li.innerText = options.innerText;
+      li.data = options.data;
+
+      return li;
+    }
+
     function buildMenu(items, activeId) {
       var
         menu = document.createElement('UL'),
-        li,
         id;
 
       menu.className = 'columnDropdownMenu';
 
       for (id in items) {
         if (items.hasOwnProperty(id)) {
-          li = document.createElement('LI');
-          li.innerText = items[id].name;
-          li.data = {
-            'fieldId': id
-          };
+          menu.appendChild(createListItem({
+            innerText: items[id].name,
+            className: (activeId === id) ? 'active' : '',
+            data: {
+              'fieldId': id
+            }
+          }));
 
-          if (activeId === id) {
-            li.className = 'active';
-          }
-
-          menu.appendChild(li);
         }
       }
 
-      li = document.createElement('LI');
-      li.className = 'divider';
-      menu.appendChild(li);
+      menu.appendChild(createListItem({
+        className: 'divider'
+      }));
 
-      li = document.createElement('LI');
-      li.innerText = 'Unset Field';
-      li.data = {
-        'fieldId': null
-      };
-      menu.appendChild(li);
+      menu.appendChild(createListItem({
+        innerText: 'Unset Field',
+        className: activeId ? '' : 'disabled',
+        data: {
+          'fieldId': null
+        }
+      }));
 
       return menu;
     }

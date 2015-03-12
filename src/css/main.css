@@ -118,6 +118,12 @@ body {
   overflow: hidden;
   background-color: #e5e5e5;
   padding: 0px;
+  cursor: auto;
+}
+
+.columnDropdownMenu .disabled {
+    color: grey;
+    cursor: not-allowed;
 }
 
 .columnDropdownMenu li.active:before {
