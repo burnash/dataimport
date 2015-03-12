@@ -14,7 +14,6 @@
     function addButtonMenuEvent(button, menu) {
 
       Handsontable.Dom.addEvent(button, 'click', function (event) {
-        console.log('got click event', event);
         var columnDropdownMenu, position, removeMenu, i, len;
 
         document.body.appendChild(menu);
@@ -43,15 +42,19 @@
         menu.style.left = (position.left) + 'px';
 
         removeMenu = function (event) {
-          console.log('in remove menu');
-
           if (event.target.nodeName === 'LI' && event.target.parentNode
             .className.indexOf('columnDropdownMenu') !== -1) {
             if (menu.parentNode) {
               menu.parentNode.removeChild(menu);
             }
           } else {
-            console.log(event.target.nodeName, event.target.parentNode);
+            columnDropdownMenu = document
+              .querySelectorAll('.columnDropdownMenu');
+            for (i = 0, len = columnDropdownMenu.length; i < len; i += 1) {
+              columnDropdownMenu[i]
+                .parentNode
+                .removeChild(columnDropdownMenu[i]);
+            }
           }
         };
 
@@ -135,7 +138,6 @@
       afterGetColHeader: function (col, TH) {
         var instance = this,
           menu = buildMenu(_this.fields, _this.mapping[col]);
-
         addButtonMenuEvent(TH.firstChild.firstChild.firstChild, menu);
 
         Handsontable.Dom.addEvent(menu, 'click', function (event) {
