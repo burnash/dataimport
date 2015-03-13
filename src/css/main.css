@@ -75,6 +75,12 @@ body {
   border-color: #adadad;
 }
 
+.btn-submit {
+    margin: 30px;
+    font-size: 20px;
+    padding: 10px 24px;
+}
+
 
 .caret {
   display: inline-block;
