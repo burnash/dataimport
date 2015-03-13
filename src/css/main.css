@@ -16,6 +16,7 @@ body {
 
 #left {
     width:188px;
+    height: 400px;
     margin: 40px;
     float: left;
 }
@@ -152,8 +153,11 @@ ul.errors {
 
 .result {
   font-size: 16px;
-  max-height: 300px;
+  max-height: 270px;
   overflow: scroll;
   border: 2px solid gray;
+  margin-top: 10px;
   margin-right: 40px;
-  padding: 20px;}
+  padding: 20px;
+  display: none;
+}
