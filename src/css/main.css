@@ -29,7 +29,7 @@ body {
     height:168px
 }
 
-.results {
+.validation-errors {
     margin-bottom: 20px;
 }
 
@@ -76,7 +76,7 @@ body {
 }
 
 .btn-submit {
-    margin: 30px;
+    margin: 34px 33px;
     font-size: 20px;
     padding: 10px 24px;
 }
@@ -145,3 +145,15 @@ body {
 .columnDropdownMenu li:hover {
     background:#eee
 }
+
+ul.errors {
+    line-height: 160%;
+}
+
+.result {
+  font-size: 16px;
+  max-height: 300px;
+  overflow: scroll;
+  border: 2px solid gray;
+  margin-right: 40px;
+  padding: 20px;}

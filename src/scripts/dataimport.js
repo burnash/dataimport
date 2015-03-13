@@ -40,7 +40,6 @@
     options = options || {};
 
     var data = this.sheet.getData();
-    console.log(data);
 
     if (data) {
       options.complete(data);
