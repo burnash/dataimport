@@ -9,7 +9,8 @@
     this.fields = options.fields;
     this.data = options.data;
 
-    var _this = this;
+    var _this = this,
+      boldRenderer;
 
     function arrayToObject(array) {
       var len = array.length,
@@ -57,7 +58,7 @@
 
         removeMenu = function (event) {
           if (event.target.nodeName === 'LI' && event.target.parentNode
-              .className.indexOf('columnDropdownMenu') !== -1) {
+            .className.indexOf('columnDropdownMenu') !== -1) {
             if (menu.parentNode) {
               menu.parentNode.removeChild(menu);
             }
@@ -137,16 +138,18 @@
       instance.render();
     }
 
-    var boldRenderer = function (
-      instance, td, row, col, prop, value, cellProperties) { // jshint ignore:line
+    /*jslint unparam: true */
+    boldRenderer = function (instance, td, row, col, prop,
+      value, cellProperties) {
+      //jshint unused:false
 
       Handsontable.renderers.TextRenderer.apply(this, arguments);
       td.style.fontWeight = 'bold';
     };
 
-    var getHeaderTitle = function (columnIndex, mapping, data) {
+    function getHeaderTitle(columnIndex, mapping, data) {
       var fieldId = mapping[columnIndex],
-          name = 'None';
+        name = 'None';
 
       if (fieldId) {
         name = _this.fieldById[fieldId].name;
@@ -158,7 +161,7 @@
       }
 
       return name;
-    };
+    }
 
     this.hot = new Handsontable(container, {
       stretchH: 'all',
