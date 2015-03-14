@@ -110,6 +110,40 @@
     return result;
   }
 
+  function findFieldsWithMissingValues(data) {
+    var result = [],
+      obj = {},
+      leni,
+      lenj,
+      column,
+      i,
+      j;
+
+    for (i = 0, leni = data.length; i < leni; i += 1) {
+      for (j = 0, lenj = data[i].length; j < lenj; j += 1) {
+        if (data[i][j] === '') {
+          column = obj[j];
+          if (!column) {
+            obj[j] = column = [];
+          }
+          column.push(i);
+        }
+      }
+    }
+
+    for (j in obj) {
+      if (obj.hasOwnProperty(j)) {
+        result.push({
+          id: data[0][j],
+          index: j,
+          emptyRows: obj[j]
+        });
+      }
+    }
+
+    return result;
+  }
+
   function pluralizeEn(num, singular, plural) {
     return (num !== 1) ? plural : singular;
   }
@@ -162,22 +196,23 @@
     }
 
     // Check for missing values in columns
-    // missing = findFieldsWithMissingValues(data[0]);
-    // if (missing.length) {
-    //   msg = pluralizeEn(missing.length, 'Missing field',
-    //     'Missing fields');
+    missing = findFieldsWithMissingValues(data);
+    if (missing.length) {
+      msg = pluralizeEn(missing.length,
+        'Missing values in field',
+        'Missing values in fields');
 
-    //   items = [];
-    //   for (i = 0; i < missing.length; i += 1) {
-    //     items.push('"' + missing[i] + '"');
-    //   }
+      items = [];
+      for (i = 0; i < missing.length; i += 1) {
+        items.push('"' + missing[i].id + '"');
+      }
 
-    //   msg += ' ' + items.join(', ');
+      msg += ' ' + items.join(', ');
 
-    //   errors.push({
-    //     msg: msg
-    //   });
-    // }
+      errors.push({
+        msg: msg
+      });
+    }
 
 
     if (errors.length) {
