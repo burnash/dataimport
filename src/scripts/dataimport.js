@@ -51,169 +51,23 @@
     return dataCopy;
   }
 
-  function findDuplicateFields(array) {
-    var len = array.length,
-      obj = {},
-      result = [],
-      indexList,
-      item,
-      i;
-
-    for (i = 0; i < len; i += 1) {
-      indexList = obj[array[i]];
-      if (!indexList) {
-        obj[array[i]] = indexList = [];
-      }
-      indexList.push(i);
-    }
-
-    for (item in obj) {
-      if (obj.hasOwnProperty(item)) {
-        indexList = obj[item];
-        if (indexList.length > 1) {
-          result.push([item, indexList]);
-        }
-      }
-    }
-
-    return result;
-  }
-
-  function findMissingFields(headers, fieldList) {
-    var result = [],
-      obj = {},
-      field,
-      fieldId,
-      len,
-      i;
-
-    // make obj with required fields as keys
-    for (i = 0, len = fieldList.length; i < len; i += 1) {
-      field = fieldList[i];
-      if (field.required) {
-        obj[field.id] = true;
-      }
-    }
-
-    for (i = 0, len = headers.length; i < len; i += 1) {
-      delete obj[headers[i]];
-    }
-
-    console.log(obj);
-
-    for (fieldId in obj) {
-      if (obj.hasOwnProperty(fieldId)) {
-        result.push(fieldId);
-      }
-    }
-
-    return result;
-  }
-
-  function findFieldsWithMissingValues(data) {
-    var result = [],
-      obj = {},
-      leni,
-      lenj,
-      column,
-      i,
-      j;
-
-    for (i = 0, leni = data.length; i < leni; i += 1) {
-      for (j = 0, lenj = data[i].length; j < lenj; j += 1) {
-        if (data[i][j] === '') {
-          column = obj[j];
-          if (!column) {
-            obj[j] = column = [];
-          }
-          column.push(i);
-        }
-      }
-    }
-
-    for (j in obj) {
-      if (obj.hasOwnProperty(j)) {
-        result.push({
-          id: data[0][j],
-          index: j,
-          emptyRows: obj[j]
-        });
-      }
-    }
-
-    return result;
-  }
-
-  function pluralizeEn(num, singular, plural) {
-    return (num !== 1) ? plural : singular;
-  }
 
   DataImport.prototype.validate = function (options) {
     options = options || {};
 
     var data = mergeHeaders(this.sheet.getData(), this.sheet.getMapping()),
       errors = [],
-      duplicates,
-      missing,
-      msg,
-      items,
+      validators = DataImport.validators,
+      error,
+      len,
       i;
 
-    // Check duplicate columns
-    duplicates = findDuplicateFields(data[0]);
-    if (duplicates.length) {
-      msg = pluralizeEn(duplicates.length, 'Duplicate field',
-        'Duplicate fields');
-
-      items = [];
-      for (i = 0; i < duplicates.length; i += 1) {
-        items.push('"' + duplicates[i][0] + '"');
+    for (i = 0, len = validators.length; i < len; i += 1) {
+      error = validators[i](data, this.fields);
+      if (error) {
+        errors.push(error);
       }
-
-      msg += ' ' + items.join(', ');
-
-      errors.push({
-        msg: msg
-      });
     }
-
-    // Check if all required columns present
-    missing = findMissingFields(data[0], this.fields);
-    if (missing.length) {
-      msg = pluralizeEn(missing.length, 'Missing field',
-        'Missing fields');
-
-      items = [];
-      for (i = 0; i < missing.length; i += 1) {
-        items.push('"' + missing[i] + '"');
-      }
-
-      msg += ' ' + items.join(', ');
-
-      errors.push({
-        msg: msg
-      });
-    }
-
-    // Check for missing values in columns
-    missing = findFieldsWithMissingValues(data);
-    if (missing.length) {
-      msg = pluralizeEn(missing.length,
-        'Missing values in field',
-        'Missing values in fields');
-
-      items = [];
-      for (i = 0; i < missing.length; i += 1) {
-        items.push('"' + missing[i].id + '"');
-      }
-
-      msg += ' ' + items.join(', ');
-
-      errors.push({
-        msg: msg
-      });
-    }
-
 
     if (errors.length) {
       options.fail(errors);
@@ -225,6 +79,46 @@
   DataImport.prototype.destroy = function () {
     this.sheet.destroy();
   };
+
+
+  // DataImport.validators = {};
+
+  // DataImport.validators.unique = (function () {
+  //   function makeError(duplicates) {
+  //     var msg = 'Duplicate values ',
+  //       values = [],
+  //       i;
+
+  //     for (i = 0; i < duplicates.length; i += 1) {
+  //       values.push('"' + duplicates[i][0] + '"');
+  //     }
+
+  //     msg += values.join(', ');
+
+  //     return msg;
+  //   }
+
+  //   function validate(columnIndex, data) {
+  //     var columnValues = [],
+  //       duplicates,
+  //       len,
+  //       i;
+
+  //     for (i = 1, len = data.length; i < len; i += 1) {
+  //       columnValues.push(data[i][columnIndex]);
+  //     }
+  //     duplicates = findDuplicateItems(columnValues);
+
+  //     if (duplicates.length) {
+  //       return makeError(duplicates);
+  //     }
+
+  //     return null;
+  //   }
+
+  //   return validate;
+  // }());
+
 
   window.DataImport = DataImport;
 

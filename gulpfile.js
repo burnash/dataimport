@@ -24,6 +24,7 @@ var src = {
     'src/scripts/sheet.js',
     'src/scripts/dropfile.js',
     'src/scripts/dataimport.js',
+    'src/scripts/validators.js',
     'src/scripts/main.js'
   ],
   css: 'src/css/**/*.css',
