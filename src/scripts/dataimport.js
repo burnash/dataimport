@@ -122,6 +122,7 @@
       duplicates,
       missing,
       msg,
+      items,
       i;
 
     // Check duplicate columns
@@ -130,9 +131,12 @@
       msg = pluralizeEn(duplicates.length, 'Duplicate field',
         'Duplicate fields');
 
+      items = [];
       for (i = 0; i < duplicates.length; i += 1) {
-        msg += ' "' + duplicates[i][0] + '"';
+        items.push('"' + duplicates[i][0] + '"');
       }
+
+      msg += ' ' + items.join(', ');
 
       errors.push({
         msg: msg
@@ -145,9 +149,12 @@
       msg = pluralizeEn(missing.length, 'Missing field',
         'Missing fields');
 
+      items = [];
       for (i = 0; i < missing.length; i += 1) {
-        msg += ' "' + missing[i] + '"';
+        items.push('"' + missing[i] + '"');
       }
+
+      msg += ' ' + items.join(', ');
 
       errors.push({
         msg: msg
