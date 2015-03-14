@@ -144,6 +144,22 @@
       td.style.fontWeight = 'bold';
     };
 
+    var getHeaderTitle = function (columnIndex, mapping, data) {
+      var fieldId = mapping[columnIndex],
+          name = 'None';
+
+      if (fieldId) {
+        name = _this.fieldById[fieldId].name;
+      } else {
+        if (data.length && data[0].length && data[0][columnIndex]) {
+          name = data[0][columnIndex];
+        }
+        name = '<span style="color: gray;">' + name + '</span>';
+      }
+
+      return name;
+    };
+
     this.hot = new Handsontable(container, {
       stretchH: 'all',
       rowHeaders: true,
@@ -155,12 +171,7 @@
       contextMenu: true,
 
       colHeaders: function (col) {
-        var fieldId = _this.mapping[col],
-          name = '<span style="color: gray;">None</span>';
-
-        if (fieldId) {
-          name = _this.fieldById[fieldId].name;
-        }
+        var name = getHeaderTitle(col, _this.mapping, _this.data);
 
         return '<button class="btn btn-default dropdown-toggle"' +
           ' type="button" id="dropdownMenu1" data-toggle="dropdown"' +
