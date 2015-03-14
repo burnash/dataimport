@@ -51,7 +51,7 @@
     return dataCopy;
   }
 
-  function findDuplicates(array) {
+  function findDuplicateFields(array) {
     var len = array.length,
       obj = {},
       result = [],
@@ -79,29 +79,79 @@
     return result;
   }
 
+  function findMissingFields(headers, fieldList) {
+    var result = [],
+      obj = {},
+      field,
+      fieldId,
+      len,
+      i;
+
+    // make obj with required fields as keys
+    for (i = 0, len = fieldList.length; i < len; i += 1) {
+      field = fieldList[i];
+      if (field.required) {
+        obj[field.id] = true;
+      }
+    }
+
+    for (i = 0, len = headers.length; i < len; i += 1) {
+      delete obj[headers[i]];
+    }
+
+    console.log(obj);
+
+    for (fieldId in obj) {
+      if (obj.hasOwnProperty(fieldId)) {
+        result.push(fieldId);
+      }
+    }
+
+    return result;
+  }
+
+  function pluralizeEn(num, singular, plural) {
+    return (num !== 1) ? plural : singular;
+  }
+
   DataImport.prototype.validate = function (options) {
     options = options || {};
 
     var data = mergeHeaders(this.sheet.getData(), this.sheet.getMapping()),
       errors = [],
       duplicates,
+      missing,
       msg,
       i;
 
     // Check duplicate columns
-    duplicates = findDuplicates(data[0]);
+    duplicates = findDuplicateFields(data[0]);
     if (duplicates.length) {
-      if (duplicates.length === 1) {
-        msg = 'Duplicate field ';
-      } else {
-        msg = 'Duplicate fields ';
-      }
+      msg = pluralizeEn(duplicates.length, 'Duplicate field',
+        'Duplicate fields');
 
       for (i = 0; i < duplicates.length; i += 1) {
-        msg += '"' + duplicates[i][0] + '"';
+        msg += ' "' + duplicates[i][0] + '"';
       }
 
-      errors.push({msg: msg});
+      errors.push({
+        msg: msg
+      });
+    }
+
+    // Check if all required columns present
+    missing = findMissingFields(data[0], this.fields);
+    if (missing.length) {
+      msg = pluralizeEn(missing.length, 'Missing field',
+        'Missing fields');
+
+      for (i = 0; i < missing.length; i += 1) {
+        msg += ' "' + missing[i] + '"';
+      }
+
+      errors.push({
+        msg: msg
+      });
     }
 
     if (errors.length) {
