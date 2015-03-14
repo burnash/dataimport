@@ -161,6 +161,25 @@
       });
     }
 
+    // Check for missing values in columns
+    // missing = findFieldsWithMissingValues(data[0]);
+    // if (missing.length) {
+    //   msg = pluralizeEn(missing.length, 'Missing field',
+    //     'Missing fields');
+
+    //   items = [];
+    //   for (i = 0; i < missing.length; i += 1) {
+    //     items.push('"' + missing[i] + '"');
+    //   }
+
+    //   msg += ' ' + items.join(', ');
+
+    //   errors.push({
+    //     msg: msg
+    //   });
+    // }
+
+
     if (errors.length) {
       options.fail(errors);
     } else {
