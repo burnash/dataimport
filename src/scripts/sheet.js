@@ -211,6 +211,10 @@
     return this.hot.getData();
   };
 
+  Sheet.prototype.getMapping = function () {
+    return this.mapping;
+  };
+
   Sheet.prototype.destroy = function () {
     this.hot.destroy();
   };
