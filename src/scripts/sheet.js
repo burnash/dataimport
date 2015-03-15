@@ -12,19 +12,7 @@
     var _this = this,
       boldRenderer;
 
-    function arrayToObject(array) {
-      var len = array.length,
-        obj = {},
-        i;
-
-      for (i = 0; i < len; i += 1) {
-        obj[array[i].id] = array[i];
-      }
-
-      return obj;
-    }
-
-    this.fieldById = arrayToObject(options.fields);
+    this.fieldById = options.fields.toObject();
 
     function addButtonMenuEvent(button, menu) {
 

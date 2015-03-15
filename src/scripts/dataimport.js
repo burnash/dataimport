@@ -26,6 +26,18 @@
       return mapping;
     }
 
+    this.fields.toObject = function () {
+      var len = this.length,
+        obj = {},
+        i;
+
+      for (i = 0; i < len; i += 1) {
+        obj[this[i].id] = this[i];
+      }
+
+      return obj;
+    };
+
     var mapping = mapFields(this.fields, this.data);
 
     this.sheet = new Sheet(containerElement, {

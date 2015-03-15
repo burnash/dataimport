@@ -95,10 +95,32 @@
   }
 
 
+  function getColumnValues(data, columnIndex) {
+    var columnValues = [],
+      len,
+      i;
+    for (i = 1, len = data.length; i < len; i += 1) {
+      columnValues.push(data[i][columnIndex]);
+    }
+    return columnValues;
+  }
+
+
   function pluralizeEn(num, singular, plural) {
     return (num !== 1) ? plural : singular;
   }
 
+
+  function isEmpty(obj) {
+    var prop;
+    for (prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 
   /**
    * Check for duplicate columns
@@ -184,9 +206,64 @@
     }
   }
 
+  /**
+   * Check for unique values in columns
+   *
+   * @param {Array} data
+   */
+  function checkUniqueValues(data, fields) {
+    var fieldById = fields.toObject(),
+      duplicates = {},
+      items = [],
+      columnDuplicates,
+      firstRow,
+      columnValues,
+      field,
+      msg,
+      len,
+      i;
+
+    if (!data.length) {
+      return;
+    }
+
+    firstRow = data[0];
+
+    for (i = 0, len = firstRow.length; i < len; i += 1) {
+      field = fieldById[firstRow[i]];
+      if (field && field.unique) {
+        columnValues = getColumnValues(data, i);
+        columnDuplicates = findDuplicateItems(columnValues);
+        if (columnDuplicates.length) {
+          duplicates[field.id] = columnDuplicates;
+        }
+      }
+    }
+
+    if (!isEmpty(duplicates)) {
+      msg = 'Duplicate values in ';
+
+      for (field in duplicates) {
+        if (duplicates.hasOwnProperty(field)) {
+          items.push('"' + field + '"');
+        }
+      }
+
+      msg += ' ' + items.join(', ');
+
+    }
+
+    console.log(duplicates);
+    return {
+      msg: msg
+    };
+  }
+
+
   validators.push(checkDuplicates);
   validators.push(checkMissingFields);
   validators.push(checkMissingValues);
+  validators.push(checkUniqueValues);
 
   DataImport.validators = validators;
 
