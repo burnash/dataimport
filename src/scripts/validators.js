@@ -105,6 +105,15 @@
     return columnValues;
   }
 
+  function getDuplicateValues(duplicateItems) {
+    var result = [],
+      len,
+      i;
+    for (i = 0, len = duplicateItems.length; i < len; i += 1) {
+      result.push(duplicateItems[i][0]);
+    }
+    return result;
+  }
 
   function pluralizeEn(num, singular, plural) {
     return (num !== 1) ? plural : singular;
@@ -245,15 +254,14 @@
 
       for (field in duplicates) {
         if (duplicates.hasOwnProperty(field)) {
-          items.push('"' + field + '"');
+          items.push('"' + field + '": ' +
+            getDuplicateValues(duplicates[field]).join(', '));
         }
       }
 
-      msg += ' ' + items.join(', ');
-
+      msg += ' ' + items.join('; in ');
     }
 
-    console.log(duplicates);
     return {
       msg: msg
     };
