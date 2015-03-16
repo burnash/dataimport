@@ -56,13 +56,12 @@
         i += 1;
         return value;
       }),
-      dataCopy = data.slice(0);
+      dataCopy = data.slice(1);
 
     dataCopy.unshift(newHeaders);
 
     return dataCopy;
   }
-
 
   DataImport.prototype.validate = function (options) {
     options = options || {};

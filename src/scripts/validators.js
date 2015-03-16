@@ -260,11 +260,55 @@
       }
 
       msg += ' ' + items.join('; in ');
+
+      return {
+        msg: msg
+      };
+    }
+  }
+
+  function findMatchExceptions(regex, columnValues) {
+    console.log(regex, columnValues);
+    return [];
+  }
+
+  /**
+   * Check for values matching regex
+   *
+   * @param {Array} data
+   */
+  function checkValuesMatchRegex(data, fields) {
+    var fieldById = fields.toObject(),
+      exceptions = [],
+      firstRow,
+      columnValues,
+      matchExceptions,
+      field,
+      len,
+      i;
+
+    // get fields from columns
+    // select those with regex validator
+    // check fields to conform regex
+
+    if (!data.length) {
+      return;
     }
 
-    return {
-      msg: msg
-    };
+    firstRow = data[0];
+
+    for (i = 0, len = firstRow.length; i < len; i += 1) {
+      field = fieldById[firstRow[i]];
+      if (field && field.matchRegex) {
+        columnValues = getColumnValues(data, i);
+        matchExceptions = findMatchExceptions(field.matchRegex,
+          columnValues);
+        if (matchExceptions.length) {
+          exceptions[field.id] = matchExceptions;
+        }
+      }
+    }
+
   }
 
 
@@ -272,6 +316,7 @@
   validators.push(checkMissingFields);
   validators.push(checkMissingValues);
   validators.push(checkUniqueValues);
+  validators.push(checkValuesMatchRegex);
 
   DataImport.validators = validators;
 
