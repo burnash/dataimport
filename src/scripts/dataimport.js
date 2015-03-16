@@ -91,46 +91,6 @@
     this.sheet.destroy();
   };
 
-
-  // DataImport.validators = {};
-
-  // DataImport.validators.unique = (function () {
-  //   function makeError(duplicates) {
-  //     var msg = 'Duplicate values ',
-  //       values = [],
-  //       i;
-
-  //     for (i = 0; i < duplicates.length; i += 1) {
-  //       values.push('"' + duplicates[i][0] + '"');
-  //     }
-
-  //     msg += values.join(', ');
-
-  //     return msg;
-  //   }
-
-  //   function validate(columnIndex, data) {
-  //     var columnValues = [],
-  //       duplicates,
-  //       len,
-  //       i;
-
-  //     for (i = 1, len = data.length; i < len; i += 1) {
-  //       columnValues.push(data[i][columnIndex]);
-  //     }
-  //     duplicates = findDuplicateItems(columnValues);
-
-  //     if (duplicates.length) {
-  //       return makeError(duplicates);
-  //     }
-
-  //     return null;
-  //   }
-
-  //   return validate;
-  // }());
-
-
   window.DataImport = DataImport;
 
 }(window, Sheet, Fuse));
