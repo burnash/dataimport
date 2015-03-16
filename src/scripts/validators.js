@@ -268,8 +268,19 @@
   }
 
   function findMatchExceptions(regex, columnValues) {
-    console.log(regex, columnValues);
-    return [];
+    var noMatch = [],
+      value,
+      len,
+      i;
+
+    for (i = 0, len = columnValues.length; i < len; i += 1) {
+      value = columnValues[i];
+      if (!value.match(regex)) {
+        noMatch.push(value);
+      }
+    }
+
+    return noMatch;
   }
 
   /**
@@ -279,12 +290,14 @@
    */
   function checkValuesMatchRegex(data, fields) {
     var fieldById = fields.toObject(),
-      exceptions = [],
+      exceptions = {},
+      items = [],
       firstRow,
       columnValues,
       matchExceptions,
       field,
       len,
+      msg,
       i;
 
     // get fields from columns
@@ -301,14 +314,32 @@
       field = fieldById[firstRow[i]];
       if (field && field.matchRegex) {
         columnValues = getColumnValues(data, i);
-        matchExceptions = findMatchExceptions(field.matchRegex,
-          columnValues);
+        matchExceptions = findMatchExceptions(
+          new RegExp(field.matchRegex[0], field.matchRegex[1]),
+          columnValues
+        );
         if (matchExceptions.length) {
           exceptions[field.id] = matchExceptions;
         }
       }
     }
 
+    if (!isEmpty(exceptions)) {
+      msg = 'Wrong value format in ';
+
+      for (field in exceptions) {
+        if (exceptions.hasOwnProperty(field)) {
+          items.push('"' + field + '": ' +
+            exceptions[field].join(', '));
+        }
+      }
+
+      msg += ' ' + items.join('; in ');
+
+      return {
+        msg: msg
+      };
+    }
   }
 
 
