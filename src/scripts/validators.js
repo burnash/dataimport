@@ -191,6 +191,7 @@
    * Check for missing values in columns
    *
    * @param {Array} data
+   * @param {Array} fields
    */
   function checkMissingValues(data) {
     var missing = findFieldsWithMissingValues(data),
@@ -219,6 +220,7 @@
    * Check for unique values in columns
    *
    * @param {Array} data
+   * @param {Array} fields
    */
   function checkUniqueValues(data, fields) {
     var fieldById = fields.toObject(),
@@ -267,7 +269,7 @@
     }
   }
 
-  function findMatchExceptions(regex, columnValues) {
+  function findRegexMatchExceptions(regex, columnValues) {
     var noMatch = [],
       value,
       len,
@@ -283,10 +285,27 @@
     return noMatch;
   }
 
+  function findStringMatchExceptions(array, columnValues) {
+    var noMatch = [],
+      value,
+      len,
+      i;
+
+    for (i = 0, len = columnValues.length; i < len; i += 1) {
+      value = columnValues[i];
+      if (array.indexOf(value) === -1) {
+        noMatch.push(value);
+      }
+    }
+
+    return noMatch;
+  }
+
   /**
    * Check for values matching regex
    *
    * @param {Array} data
+   * @param {Array} fields
    */
   function checkValuesMatchRegex(data, fields) {
     var fieldById = fields.toObject(),
@@ -300,10 +319,6 @@
       msg,
       i;
 
-    // get fields from columns
-    // select those with regex validator
-    // check fields to conform regex
-
     if (!data.length) {
       return;
     }
@@ -314,8 +329,64 @@
       field = fieldById[firstRow[i]];
       if (field && field.matchRegex) {
         columnValues = getColumnValues(data, i);
-        matchExceptions = findMatchExceptions(
+        matchExceptions = findRegexMatchExceptions(
           new RegExp(field.matchRegex[0], field.matchRegex[1]),
+          columnValues
+        );
+        if (matchExceptions.length) {
+          exceptions[field.id] = matchExceptions;
+        }
+      }
+    }
+
+    if (!isEmpty(exceptions)) {
+      msg = 'Wrong value format in ';
+
+      for (field in exceptions) {
+        if (exceptions.hasOwnProperty(field)) {
+          items.push('"' + field + '": ' +
+            exceptions[field].join(', '));
+        }
+      }
+
+      msg += ' ' + items.join('; in ');
+
+      return {
+        msg: msg
+      };
+    }
+  }
+
+  /**
+   * Check for values matching any of given string in a set.
+   *
+   * @param {Array} data
+   * @param {Array} fields
+   */
+  function checkValuesMatchAnyInASet(data, fields) {
+    var fieldById = fields.toObject(),
+      exceptions = {},
+      items = [],
+      firstRow,
+      columnValues,
+      matchExceptions,
+      field,
+      len,
+      msg,
+      i;
+
+    if (!data.length) {
+      return;
+    }
+
+    firstRow = data[0];
+
+    for (i = 0, len = firstRow.length; i < len; i += 1) {
+      field = fieldById[firstRow[i]];
+      if (field && field.anyOf) {
+        columnValues = getColumnValues(data, i);
+        matchExceptions = findStringMatchExceptions(
+          field.anyOf,
           columnValues
         );
         if (matchExceptions.length) {
@@ -348,6 +419,7 @@
   validators.push(checkMissingValues);
   validators.push(checkUniqueValues);
   validators.push(checkValuesMatchRegex);
+  validators.push(checkValuesMatchAnyInASet);
 
   DataImport.validators = validators;
 
