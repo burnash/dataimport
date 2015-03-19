@@ -110,17 +110,6 @@
     }
 
     function setColumnMapping(columnIndex, fieldId, instance) {
-      var mapping = _this.mapping,
-        index;
-
-      if (fieldId) {
-        index = mapping.indexOf(fieldId);
-
-        if (index > -1) {
-          mapping[index] = mapping[columnIndex];
-        }
-      }
-
       _this.mapping[columnIndex] = fieldId;
 
       instance.render();
@@ -160,8 +149,10 @@
       height: 400,
 
       contextMenu: true,
+      manualColumnMove: true,
 
       colHeaders: function (col) {
+        console.log('colHeaders', col);
         var name = getHeaderTitle(col, _this.mapping, _this.data);
 
         return '<button class="btn btn-default dropdown-toggle"' +
@@ -171,6 +162,12 @@
       },
 
       afterGetColHeader: function (col, TH) {
+        console.log('afterGetColHeader', col);
+
+        if (col < 0) {
+          return;
+        }
+
         var instance = this,
           menu = buildMenu(_this.fieldById, _this.mapping[col]);
         addButtonMenuEvent(TH.firstChild.firstChild.firstChild, menu);
@@ -200,6 +197,15 @@
       afterRemoveCol: function (index, amount) {
         _this.mapping.splice(index, amount);
       },
+
+      // afterColumnMove: function (oldIndex, newIndex) {
+      //   console.log('afterColumnMove', oldIndex, newIndex);
+      //   if (oldIndex === newIndex) {
+      //     return;
+      //   }
+      //   var temp = _this.mapping.splice(oldIndex, 1);
+      //   _this.mapping.splice(newIndex, 0, temp[0]);
+      // },
 
       cells: function (r) {
         if (r === 0) {
