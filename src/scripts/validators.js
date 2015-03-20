@@ -203,9 +203,6 @@
         }
       }
 
-      console.log(arrayOfArrays, data, field, columnIndex);
-      console.log(columnValues);
-
       if (missingValues.length) {
         return message;
       }
