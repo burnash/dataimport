@@ -184,34 +184,6 @@
     return result;
   }
 
-  DataImport.is = {};
-
-  DataImport.is.belongsToAnyOfSets = function (arrayOfArrays, message) {
-    function validate(data, field, columnIndex) {
-      var columnValues = getColumnValues(data, columnIndex),
-        valueSet = arrayToSet(columnValues),
-        optionSet,
-        missingValues,
-        len,
-        i;
-
-      for (i = 0, len = arrayOfArrays.length; i < len; i += 1) {
-        optionSet = arrayToSet(arrayOfArrays[i]);
-        missingValues = substractSet(valueSet, optionSet);
-        if (!missingValues.length) {
-          break;
-        }
-      }
-
-      if (missingValues.length) {
-        return message;
-      }
-    }
-
-    return validate;
-  };
-
-
   /**
    * Check if all required columns present
    *
@@ -410,61 +382,57 @@
     }
   }
 
+  DataImport.is = {};
+
+  DataImport.is.belongsToAnyOfSets = function (arrayOfArrays, message) {
+    function validate(data, field, columnIndex) {
+      var columnValues = getColumnValues(data, columnIndex),
+        valueSet = arrayToSet(columnValues),
+        optionSet,
+        missingValues,
+        len,
+        i;
+
+      for (i = 0, len = arrayOfArrays.length; i < len; i += 1) {
+        optionSet = arrayToSet(arrayOfArrays[i]);
+        missingValues = substractSet(valueSet, optionSet);
+        if (!missingValues.length) {
+          break;
+        }
+      }
+
+      if (missingValues.length) {
+        return message;
+      }
+    }
+
+    return validate;
+  };
+
+
   /**
    * Check for values matching any of given string in a set.
    *
    * @param {Array} data
    * @param {Array} fields
    */
-  function checkValuesMatchAnyInASet(data, fields) {
-    var fieldById = fields.toObject(),
-      exceptions = {},
-      items = [],
-      firstRow,
-      columnValues,
-      matchExceptions,
-      field,
-      len,
-      msg,
-      i;
 
-    if (!data.length) {
-      return;
-    }
-
-    firstRow = data[0];
-
-    for (i = 0, len = firstRow.length; i < len; i += 1) {
-      field = fieldById[firstRow[i]];
-      if (field && field.anyOf) {
-        columnValues = getColumnValues(data, i);
+  DataImport.is.anyOf = function (array, message) {
+    function validate(data, field, columnIndex) {
+      var columnValues = getColumnValues(data, columnIndex),
         matchExceptions = findStringMatchExceptions(
-          field.anyOf,
+          array,
           columnValues
         );
-        if (matchExceptions.length) {
-          exceptions[field.id] = matchExceptions;
-        }
+
+      if (matchExceptions.length) {
+        return message + ' ' + matchExceptions.join(', ');
       }
     }
 
-    if (!isEmpty(exceptions)) {
-      msg = 'Wrong value format in ';
+    return validate;
+  };
 
-      for (field in exceptions) {
-        if (exceptions.hasOwnProperty(field)) {
-          items.push('"' + field + '": ' +
-            exceptions[field].join(', '));
-        }
-      }
-
-      msg += ' ' + items.join('; in ');
-
-      return {
-        msg: msg
-      };
-    }
-  }
 
   validators.push(checkDuplicates);
   validators.push(checkMissingFields);
