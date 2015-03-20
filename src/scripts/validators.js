@@ -159,6 +159,62 @@
     }
   }
 
+  function arrayToSet(array) {
+    var obj = {},
+      len,
+      i;
+
+    for (i = 0, len = array.length; i < len; i += 1) {
+      obj[array[i]] = true;
+    }
+
+    return obj;
+  }
+
+  function substractSet(setA, setB) {
+    var result = [],
+      value;
+
+    for (value in setA) {
+      if (setA.hasOwnProperty(value) && setB[value] === undefined) {
+        result.push(value);
+      }
+    }
+
+    return result;
+  }
+
+  DataImport.is = {};
+
+  DataImport.is.belongsToAnyOfSets = function (arrayOfArrays, message) {
+    function validate(data, field, columnIndex) {
+      var columnValues = getColumnValues(data, columnIndex),
+        valueSet = arrayToSet(columnValues),
+        optionSet,
+        missingValues,
+        len,
+        i;
+
+      for (i = 0, len = arrayOfArrays.length; i < len; i += 1) {
+        optionSet = arrayToSet(arrayOfArrays[i]);
+        missingValues = substractSet(valueSet, optionSet);
+        if (!missingValues.length) {
+          break;
+        }
+      }
+
+      console.log(arrayOfArrays, data, field, columnIndex);
+      console.log(columnValues);
+
+      if (missingValues.length) {
+        return message;
+      }
+    }
+
+    return validate;
+  };
+
+
   /**
    * Check if all required columns present
    *
@@ -412,7 +468,6 @@
       };
     }
   }
-
 
   validators.push(checkDuplicates);
   validators.push(checkMissingFields);

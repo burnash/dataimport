@@ -63,12 +63,28 @@
     return dataCopy;
   }
 
+  function forMappedFields(data, fields, fn) {
+    var fieldById = fields.toObject(),
+      firstRow = data[0],
+      field,
+      len,
+      i;
+
+    for (i = 0, len = firstRow.length; i < len; i += 1) {
+      field = fieldById[firstRow[i]];
+      if (field) {
+        fn(field, i);
+      }
+    }
+  }
+
   DataImport.prototype.validate = function (options) {
     options = options || {};
 
     var data = mergeHeaders(this.sheet.getData(), this.sheet.getMapping()),
       errors = [],
       validators = DataImport.validators,
+      validate,
       error,
       len,
       i;
@@ -78,6 +94,22 @@
       if (error) {
         errors.push(error);
       }
+    }
+
+    if (!errors.length) {
+      forMappedFields(data, this.fields, function (field, columnIndex) {
+        validate = field.validate;
+        if (validate) {
+          for (i = 0, len = validate.length; i < len; i += 1) {
+            error = validate[i](data, field, columnIndex);
+            if (error) {
+              errors.push({
+                msg: error + ' in field "' + field.id + '"'
+              });
+            }
+          }
+        }
+      });
     }
 
     if (errors.length) {

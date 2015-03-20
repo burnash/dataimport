@@ -46,7 +46,7 @@
 
         removeMenu = function (event) {
           if (event.target.nodeName === 'LI' && event.target.parentNode
-            .className.indexOf('columnDropdownMenu') !== -1) {
+              .className.indexOf('columnDropdownMenu') !== -1) {
             if (menu.parentNode) {
               menu.parentNode.removeChild(menu);
             }
