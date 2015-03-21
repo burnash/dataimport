@@ -78,16 +78,28 @@
     }
   }
 
+  function hightlightCellsAtColumn(sheet, columnIndex, rows) {
+    var len,
+      i;
+    for (i = 0, len = rows.length; i < len; i += 1) {
+      sheet.invalidateCell(rows[i] + 1, columnIndex);
+    }
+  }
+
   DataImport.prototype.validate = function (options) {
     options = options || {};
 
     var data = mergeHeaders(this.sheet.getData(), this.sheet.getMapping()),
+      _this = this,
       errors = [],
       validators = DataImport.validators,
       validate,
       error,
       len,
       i;
+
+    this.sheet.clearInvalidCells();
+    this.sheet.render();
 
     for (i = 0, len = validators.length; i < len; i += 1) {
       error = validators[i](data, this.fields);
@@ -104,12 +116,15 @@
             error = validate[i](data, field, columnIndex);
             if (error) {
               errors.push({
-                msg: error + ' in field "' + field.id + '"'
+                msg: error.msg + ' in field "' + field.id + '"'
               });
+              hightlightCellsAtColumn(_this.sheet, columnIndex, error.rows);
             }
           }
         }
       });
+
+      this.sheet.render();
     }
 
     if (errors.length) {

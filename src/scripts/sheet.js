@@ -10,9 +10,19 @@
     this.data = options.data;
 
     var _this = this,
-      boldRenderer;
+      boldRenderer,
+      validationRenderer,
+      invalidCells = {};
 
     this.fieldById = options.fields.toObject();
+
+    this.invalidateCell = function (row, column) {
+      invalidCells[row + ',' + column] = true;
+    };
+
+    this.clearInvalidCells = function () {
+      invalidCells = {};
+    };
 
     function addButtonMenuEvent(button, menu) {
 
@@ -46,7 +56,7 @@
 
         removeMenu = function (event) {
           if (event.target.nodeName === 'LI' && event.target.parentNode
-              .className.indexOf('columnDropdownMenu') !== -1) {
+            .className.indexOf('columnDropdownMenu') !== -1) {
             if (menu.parentNode) {
               menu.parentNode.removeChild(menu);
             }
@@ -122,6 +132,18 @@
 
       Handsontable.renderers.TextRenderer.apply(this, arguments);
       td.style.fontWeight = 'bold';
+    };
+
+    /*jslint unparam: true */
+    validationRenderer = function (instance, td, row, col, prop,
+      value, cellProperties) {
+      //jshint unused:false
+
+      Handsontable.renderers.TextRenderer.apply(this, arguments);
+
+      if (invalidCells[row + ',' + col]) {
+        td.style.backgroundColor = 'red';
+      }
     };
 
     function getHeaderTitle(columnIndex, mapping, data) {
@@ -210,10 +232,16 @@
       cells: function (r) {
         if (r === 0) {
           this.renderer = boldRenderer;
+        } else {
+          this.renderer = validationRenderer;
         }
       }
     });
   }
+
+  Sheet.prototype.render = function () {
+    return this.hot.render();
+  };
 
   Sheet.prototype.getData = function () {
     return this.hot.getData();

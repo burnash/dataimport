@@ -319,11 +319,20 @@
     for (i = 0, len = columnValues.length; i < len; i += 1) {
       value = columnValues[i];
       if (array.indexOf(value) === -1) {
-        noMatch.push(value);
+        noMatch.push({
+          value: value,
+          row: i
+        });
       }
     }
 
     return noMatch;
+  }
+
+  function pluck(collection, key) {
+    return collection.map(function (obj) {
+      return obj[key];
+    });
   }
 
   /**
@@ -402,13 +411,14 @@
       }
 
       if (missingValues.length) {
-        return message;
+        return {
+          msg: message
+        };
       }
     }
 
     return validate;
   };
-
 
   /**
    * Check for values matching any of given string in a set.
@@ -426,7 +436,10 @@
         );
 
       if (matchExceptions.length) {
-        return message + ' ' + matchExceptions.join(', ');
+        return {
+          msg: message,
+          rows: pluck(matchExceptions, 'row')
+        };
       }
     }
 
@@ -439,7 +452,6 @@
   validators.push(checkMissingValues);
   validators.push(checkUniqueValues);
   validators.push(checkValuesMatchRegex);
-  validators.push(checkValuesMatchAnyInASet);
 
   DataImport.validators = validators;
 
