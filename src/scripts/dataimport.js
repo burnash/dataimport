@@ -65,20 +65,6 @@
     });
   }
 
-  function forMappedFields(firstRow, fields, fn) {
-    var fieldById = fields.toObject(),
-      field,
-      len,
-      i;
-
-    for (i = 0, len = firstRow.length; i < len; i += 1) {
-      field = fieldById[firstRow[i]];
-      if (field) {
-        fn(field, i);
-      }
-    }
-  }
-
   DataImport.prototype.getFieldByColumnIndex = function (columnIndex) {
     var fieldById = this.fields.toObject(),
       headers = mergeHeaders(this.sheet.getData()[0], this.sheet.getMapping());
@@ -88,26 +74,25 @@
 
   DataImport.prototype.validateColumn = function (columnIndex) {
     var field = this.getFieldByColumnIndex(columnIndex),
-      data = this.sheet.getData(),
       errors = [],
+      data,
       validate,
       error,
       len,
       i;
 
-    if (!field || !field.validate) {
-      return;
-    }
+    if (field && field.validate) {
+      validate = field.validate;
+      data = this.sheet.getData();
 
-    validate = field.validate;
-
-    for (i = 0, len = validate.length; i < len; i += 1) {
-      error = validate[i](data, field, columnIndex);
-      if (error) {
-        errors.push({
-          msg: error.msg + ' in field "' + field.id + '"'
-        });
-        this.sheet.markCellsInColumn(columnIndex, error.rows);
+      for (i = 0, len = validate.length; i < len; i += 1) {
+        error = validate[i](data, field, columnIndex);
+        if (error) {
+          errors.push({
+            msg: error.msg + ' in field "' + field.id + '"'
+          });
+          this.sheet.markCellsInColumn(columnIndex, error.rows);
+        }
       }
     }
 
@@ -119,10 +104,10 @@
 
     var data = this.sheet.getData(),
       headers = mergeHeaders(data[0], this.sheet.getMapping()),
-      _this = this,
+      // _this = this,
       errors = [],
       validators = DataImport.validators,
-      validate,
+      // validate,
       error,
       len,
       i;
@@ -141,20 +126,9 @@
     }
 
     if (!errors.length) {
-      forMappedFields(headers, this.fields, function (field, columnIndex) {
-        validate = field.validate;
-        if (validate) {
-          for (i = 0, len = validate.length; i < len; i += 1) {
-            error = validate[i](data, field, columnIndex);
-            if (error) {
-              errors.push({
-                msg: error.msg + ' in field "' + field.id + '"'
-              });
-              _this.sheet.markCellsInColumn(columnIndex, error.rows);
-            }
-          }
-        }
-      });
+      for (i = 0, len = headers.length; i < len; i += 1) {
+        errors = errors.concat(this.validateColumn(i));
+      }
 
       this.sheet.render();
     }
