@@ -122,7 +122,6 @@
       _this = this,
       errors = [],
       validators = DataImport.validators,
-
       validate,
       error,
       len,

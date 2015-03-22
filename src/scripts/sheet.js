@@ -163,7 +163,7 @@
       Handsontable.renderers.TextRenderer.apply(this, arguments);
 
       if (markedCells[row + ',' + col]) {
-        td.style.backgroundColor = 'red';
+        td.style.backgroundColor = '#ff4c42';
       }
     };
 
