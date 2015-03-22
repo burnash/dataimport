@@ -391,6 +391,17 @@
     }
   }
 
+  function range(end) {
+    var result = [],
+      i;
+
+    for (i = 0; i <= end; i += 1) {
+      result.push(i);
+    }
+
+    return result;
+  }
+
   DataImport.is = {};
 
   DataImport.is.belongsToAnyOfSets = function (arrayOfArrays, message) {
@@ -412,7 +423,8 @@
 
       if (missingValues.length) {
         return {
-          msg: message
+          msg: message,
+          rows: range(columnValues.length)
         };
       }
     }
