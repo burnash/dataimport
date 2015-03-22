@@ -8,20 +8,41 @@
     this.mapping = options.mapping;
     this.fields = options.fields;
     this.data = options.data;
+    this.afterColumnChange = options.afterColumnChange;
 
     var _this = this,
       boldRenderer,
       validationRenderer,
-      invalidCells = {};
+      markedCells = {};
 
     this.fieldById = options.fields.toObject();
 
-    this.invalidateCell = function (row, column) {
-      invalidCells[row + ',' + column] = true;
+    this.markCell = function (row, column) {
+      markedCells[row + ',' + column] = true;
     };
 
-    this.clearInvalidCells = function () {
-      invalidCells = {};
+    this.markCellsInColumn = function (column, rows) {
+      var len,
+        i;
+      for (i = 0, len = rows.length; i < len; i += 1) {
+        this.markCell(rows[i] + 1, column);
+      }
+    };
+
+    this.clearMarkedCellsInColumn = function (column) {
+      var len,
+        i;
+      for (i = 0, len = this.data.length; i < len; i += 1) {
+        this.clearMark(i, column);
+      }
+    };
+
+    this.clearMark = function (row, column) {
+      delete markedCells[row + ',' + column];
+    };
+
+    this.clearMarkedCells = function () {
+      markedCells = {};
     };
 
     function addButtonMenuEvent(button, menu) {
@@ -141,7 +162,7 @@
 
       Handsontable.renderers.TextRenderer.apply(this, arguments);
 
-      if (invalidCells[row + ',' + col]) {
+      if (markedCells[row + ',' + col]) {
         td.style.backgroundColor = 'red';
       }
     };
@@ -174,7 +195,6 @@
       manualColumnMove: true,
 
       colHeaders: function (col) {
-        console.log('colHeaders', col);
         var name = getHeaderTitle(col, _this.mapping, _this.data);
 
         return '<button class="btn btn-default dropdown-toggle"' +
@@ -183,9 +203,26 @@
           ' <span class="caret"></span></button>';
       },
 
-      afterGetColHeader: function (col, TH) {
-        console.log('afterGetColHeader', col);
+      afterChange: function (changes, source) {
+        if (source !== 'loadData') {
+          var obj = {},
+            col,
+            len,
+            i;
 
+          for (i = 0, len = changes.length; i < len; i += 1) {
+            obj[changes[i][1]] = true;
+          }
+
+          for (col in obj) {
+            if (obj.hasOwnProperty(col)) {
+              _this.afterColumnChange(col);
+            }
+          }
+        }
+      },
+
+      afterGetColHeader: function (col, TH) {
         if (col < 0) {
           return;
         }
