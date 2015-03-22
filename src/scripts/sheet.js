@@ -13,6 +13,7 @@
     var _this = this,
       boldRenderer,
       validationRenderer,
+      dummyEditor,
       markedCells = {};
 
     this.fieldById = options.fields.toObject();
@@ -165,6 +166,17 @@
       if (markedCells[row + ',' + col]) {
         td.style.backgroundColor = '#ff4c42';
       }
+
+      if (col === 2) {
+        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+        // Handsontable.editors.DropdownEditor.apply(instance, arguments);
+        cellProperties.source = ['1', '2', '3'];
+        cellProperties.editor = Handsontable.editors.DropdownEditor;
+      }
+    };
+
+    dummyEditor = function () {
+      console.log(arguments);
     };
 
     function getHeaderTitle(columnIndex, mapping, data) {
@@ -192,7 +204,7 @@
       height: 400,
 
       contextMenu: true,
-      manualColumnMove: true,
+      manualColumnMove: false,
 
       colHeaders: function (col) {
         var name = getHeaderTitle(col, _this.mapping, _this.data);

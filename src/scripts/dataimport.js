@@ -104,10 +104,8 @@
 
     var data = this.sheet.getData(),
       headers = mergeHeaders(data[0], this.sheet.getMapping()),
-      // _this = this,
-      errors = [],
       validators = DataImport.validators,
-      // validate,
+      errors = [],
       error,
       len,
       i;
