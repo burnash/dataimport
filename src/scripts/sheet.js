@@ -13,7 +13,7 @@
     var _this = this,
       boldRenderer,
       validationRenderer,
-      dummyEditor,
+      columnChoices = {},
       markedCells = {};
 
     this.fieldById = options.fields.toObject();
@@ -45,6 +45,32 @@
     this.clearMarkedCells = function () {
       markedCells = {};
     };
+
+    function getChoicesForColumn(column) {
+      return columnChoices[column];
+    }
+
+    function setChoicesForMapping(mapping) {
+      var fieldId,
+        choices,
+        len,
+        i;
+
+      columnChoices = {};
+
+      for (i = 0, len = mapping.length; i < len; i += 1) {
+        fieldId = mapping[i];
+        if (fieldId) {
+          choices = _this.fieldById[fieldId].choices;
+
+          if (choices) {
+            columnChoices[i] = choices;
+          }
+        }
+      }
+    }
+
+    setChoicesForMapping(this.mapping);
 
     function addButtonMenuEvent(button, menu) {
 
@@ -144,6 +170,7 @@
     function setColumnMapping(columnIndex, fieldId, instance) {
       _this.mapping[columnIndex] = fieldId;
 
+      setChoicesForMapping(_this.mapping);
       instance.render();
     }
 
@@ -167,16 +194,12 @@
         td.style.backgroundColor = '#ff4c42';
       }
 
-      if (col === 2) {
+      var choices = getChoicesForColumn(col);
+      if (choices) {
         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
-        // Handsontable.editors.DropdownEditor.apply(instance, arguments);
-        cellProperties.source = ['1', '2', '3'];
+        cellProperties.source = choices;
         cellProperties.editor = Handsontable.editors.DropdownEditor;
       }
-    };
-
-    dummyEditor = function () {
-      console.log(arguments);
     };
 
     function getHeaderTitle(columnIndex, mapping, data) {
