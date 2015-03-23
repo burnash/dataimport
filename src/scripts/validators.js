@@ -5,14 +5,14 @@
   var validators = [];
 
   function findDuplicateItems(array) {
-    var len = array.length,
-      obj = {},
+    var obj = {},
       result = [],
       indexList,
-      item,
+      value,
+      len,
       i;
 
-    for (i = 0; i < len; i += 1) {
+    for (i = 0, len = array.length; i < len; i += 1) {
       indexList = obj[array[i]];
       if (!indexList) {
         obj[array[i]] = indexList = [];
@@ -20,11 +20,17 @@
       indexList.push(i);
     }
 
-    for (item in obj) {
-      if (obj.hasOwnProperty(item)) {
-        indexList = obj[item];
-        if (indexList.length > 1) {
-          result.push([item, indexList]);
+    for (value in obj) {
+      if (obj.hasOwnProperty(value)) {
+        indexList = obj[value];
+        len = indexList.length;
+        if (len > 1) {
+          for (i = 0; i < len; i += 1) {
+            result.push({
+              value: value,
+              row: indexList[i]
+            });
+          }
         }
       }
     }
@@ -94,7 +100,6 @@
     return result;
   }
 
-
   function getColumnValues(data, columnIndex) {
     var columnValues = [],
       len,
@@ -105,20 +110,9 @@
     return columnValues;
   }
 
-  function getDuplicateValues(duplicateItems) {
-    var result = [],
-      len,
-      i;
-    for (i = 0, len = duplicateItems.length; i < len; i += 1) {
-      result.push(duplicateItems[i][0]);
-    }
-    return result;
-  }
-
   function pluralizeEn(num, singular, plural) {
     return (num !== 1) ? plural : singular;
   }
-
 
   function isEmpty(obj) {
     var prop;
@@ -241,59 +235,6 @@
     }
   }
 
-  /**
-   * Check for unique values in columns
-   *
-   * @param {Array} data
-   * @param {Array} fields
-   */
-  function checkUniqueValues(data, fields) {
-    var fieldById = fields.toObject(),
-      duplicates = {},
-      items = [],
-      columnDuplicates,
-      firstRow,
-      columnValues,
-      field,
-      msg,
-      len,
-      i;
-
-    if (!data.length) {
-      return;
-    }
-
-    firstRow = data[0];
-
-    for (i = 0, len = firstRow.length; i < len; i += 1) {
-      field = fieldById[firstRow[i]];
-      if (field && field.unique) {
-        columnValues = getColumnValues(data, i);
-        columnDuplicates = findDuplicateItems(columnValues);
-        if (columnDuplicates.length) {
-          duplicates[field.id] = columnDuplicates;
-        }
-      }
-    }
-
-    if (!isEmpty(duplicates)) {
-      msg = 'Duplicate values in ';
-
-      for (field in duplicates) {
-        if (duplicates.hasOwnProperty(field)) {
-          items.push('"' + field + '": ' +
-            getDuplicateValues(duplicates[field]).join(', '));
-        }
-      }
-
-      msg += ' ' + items.join('; in ');
-
-      return {
-        msg: msg
-      };
-    }
-  }
-
   function findRegexMatchExceptions(regex, columnValues) {
     var noMatch = [],
       value,
@@ -404,6 +345,31 @@
 
   DataImport.is = {};
 
+  /**
+   * Check for unique values in columns
+   *
+   * @param {Array} data
+   * @param {Array} fields
+   */
+
+  DataImport.is.unique = function (message) {
+    message = message || 'Duplicate values';
+
+    function validate(data, field, columnIndex) {
+      var columnValues = getColumnValues(data, columnIndex),
+        duplicates = findDuplicateItems(columnValues);
+
+      if (duplicates.length) {
+        return {
+          msg: message,
+          rows: pluck(duplicates, 'row')
+        };
+      }
+    }
+
+    return validate;
+  };
+
   DataImport.is.belongsToAnyOfSets = function (arrayOfArrays, message) {
     function validate(data, field, columnIndex) {
       var columnValues = getColumnValues(data, columnIndex),
@@ -462,7 +428,6 @@
   validators.push(checkDuplicates);
   validators.push(checkMissingFields);
   validators.push(checkMissingValues);
-  validators.push(checkUniqueValues);
   validators.push(checkValuesMatchRegex);
 
   DataImport.validators = validators;
