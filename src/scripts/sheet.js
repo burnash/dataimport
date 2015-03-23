@@ -18,6 +18,10 @@
 
     this.fieldById = options.fields.toObject();
 
+    /**
+     * Marked Cells
+     */
+
     this.markCell = function (row, column) {
       markedCells[row + ',' + column] = true;
     };
@@ -71,6 +75,38 @@
     }
 
     setChoicesForMapping(this.mapping);
+
+    /*jslint unparam: true */
+    boldRenderer = function (instance, td, row, col, prop,
+      value, cellProperties) {
+      //jshint unused:false
+
+      Handsontable.renderers.TextRenderer.apply(this, arguments);
+      td.style.fontWeight = 'bold';
+    };
+
+    /*jslint unparam: true */
+    validationRenderer = function (instance, td, row, col, prop,
+      value, cellProperties) {
+      //jshint unused:false
+
+      Handsontable.renderers.TextRenderer.apply(this, arguments);
+
+      if (markedCells[row + ',' + col]) {
+        td.style.backgroundColor = '#ff4c42';
+      }
+
+      var choices = getChoicesForColumn(col);
+      if (choices) {
+        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
+        cellProperties.source = choices;
+        cellProperties.editor = Handsontable.editors.DropdownEditor;
+      }
+    };
+
+    /**
+     * Dropdowns
+     */
 
     function addButtonMenuEvent(button, menu) {
 
@@ -174,34 +210,6 @@
       instance.render();
     }
 
-    /*jslint unparam: true */
-    boldRenderer = function (instance, td, row, col, prop,
-      value, cellProperties) {
-      //jshint unused:false
-
-      Handsontable.renderers.TextRenderer.apply(this, arguments);
-      td.style.fontWeight = 'bold';
-    };
-
-    /*jslint unparam: true */
-    validationRenderer = function (instance, td, row, col, prop,
-      value, cellProperties) {
-      //jshint unused:false
-
-      Handsontable.renderers.TextRenderer.apply(this, arguments);
-
-      if (markedCells[row + ',' + col]) {
-        td.style.backgroundColor = '#ff4c42';
-      }
-
-      var choices = getChoicesForColumn(col);
-      if (choices) {
-        Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
-        cellProperties.source = choices;
-        cellProperties.editor = Handsontable.editors.DropdownEditor;
-      }
-    };
-
     function getHeaderTitle(columnIndex, mapping, data) {
       var fieldId = mapping[columnIndex],
         name = 'None';
@@ -217,6 +225,10 @@
 
       return name;
     }
+
+    /**
+     * Handsontable Init
+     */
 
     this.hot = new Handsontable(container, {
       stretchH: 'all',
