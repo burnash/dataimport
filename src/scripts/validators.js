@@ -337,7 +337,10 @@
   };
 
   /**
+   * Check is column values are subset of a specific set
    *
+   * @param {Array} arrayOfArrays
+   * @param {String} message
    */
 
   DataImport.is.belongsToAnyOfSets = function (arrayOfArrays, message) {
@@ -393,7 +396,6 @@
 
     return validate;
   };
-
 
   validators.push(checkDuplicates);
   validators.push(checkMissingFields);
