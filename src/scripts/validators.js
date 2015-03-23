@@ -114,22 +114,12 @@
     return (num !== 1) ? plural : singular;
   }
 
-  function isEmpty(obj) {
-    var prop;
-    for (prop in obj) {
-      if (obj.hasOwnProperty(prop)) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
   /**
    * Check for duplicate columns
    *
    * @param {Array} data
    */
+
   function checkDuplicates(data) {
     var duplicates = findDuplicateItems(data[0]),
       msg,
@@ -244,7 +234,10 @@
     for (i = 0, len = columnValues.length; i < len; i += 1) {
       value = columnValues[i];
       if (!value.match(regex)) {
-        noMatch.push(value);
+        noMatch.push({
+          value: value,
+          row: i
+        });
       }
     }
 
@@ -276,62 +269,6 @@
     });
   }
 
-  /**
-   * Check for values matching regex
-   *
-   * @param {Array} data
-   * @param {Array} fields
-   */
-  function checkValuesMatchRegex(data, fields) {
-    var fieldById = fields.toObject(),
-      exceptions = {},
-      items = [],
-      firstRow,
-      columnValues,
-      matchExceptions,
-      field,
-      len,
-      msg,
-      i;
-
-    if (!data.length) {
-      return;
-    }
-
-    firstRow = data[0];
-
-    for (i = 0, len = firstRow.length; i < len; i += 1) {
-      field = fieldById[firstRow[i]];
-      if (field && field.matchRegex) {
-        columnValues = getColumnValues(data, i);
-        matchExceptions = findRegexMatchExceptions(
-          new RegExp(field.matchRegex[0], field.matchRegex[1]),
-          columnValues
-        );
-        if (matchExceptions.length) {
-          exceptions[field.id] = matchExceptions;
-        }
-      }
-    }
-
-    if (!isEmpty(exceptions)) {
-      msg = 'Wrong value format in ';
-
-      for (field in exceptions) {
-        if (exceptions.hasOwnProperty(field)) {
-          items.push('"' + field + '": ' +
-            exceptions[field].join(', '));
-        }
-      }
-
-      msg += ' ' + items.join('; in ');
-
-      return {
-        msg: msg
-      };
-    }
-  }
-
   function range(end) {
     var result = [],
       i;
@@ -348,8 +285,7 @@
   /**
    * Check for unique values in columns
    *
-   * @param {Array} data
-   * @param {Array} fields
+   * @param {String} message
    */
 
   DataImport.is.unique = function (message) {
@@ -369,6 +305,40 @@
 
     return validate;
   };
+
+  /**
+   * Check for values matching regex
+   *
+   * @param {Array} regExpAndFlags
+   * @param {String} message
+   */
+
+  DataImport.is.matchingRegex = function (regExpAndFlags, message) {
+    message = message || 'Wrong value format';
+
+    var regex = new RegExp(regExpAndFlags[0], regExpAndFlags[1]);
+
+    function validate(data, field, columnIndex) {
+      var columnValues = getColumnValues(data, columnIndex),
+        matchExceptions = findRegexMatchExceptions(
+          regex,
+          columnValues
+        );
+
+      if (matchExceptions.length) {
+        return {
+          msg: message,
+          rows: pluck(matchExceptions, 'row')
+        };
+      }
+    }
+
+    return validate;
+  };
+
+  /**
+   *
+   */
 
   DataImport.is.belongsToAnyOfSets = function (arrayOfArrays, message) {
     function validate(data, field, columnIndex) {
@@ -401,8 +371,8 @@
   /**
    * Check for values matching any of given string in a set.
    *
-   * @param {Array} data
-   * @param {Array} fields
+   * @param {Array} array
+   * @param {String} message
    */
 
   DataImport.is.anyOf = function (array, message) {
@@ -428,7 +398,6 @@
   validators.push(checkDuplicates);
   validators.push(checkMissingFields);
   validators.push(checkMissingValues);
-  validators.push(checkValuesMatchRegex);
 
   DataImport.validators = validators;
 
