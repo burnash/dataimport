@@ -101,6 +101,8 @@
         Handsontable.renderers.AutocompleteRenderer.apply(this, arguments);
         cellProperties.source = choices;
         cellProperties.editor = Handsontable.editors.DropdownEditor;
+      } else {
+        cellProperties.editor = 'text';
       }
     };
 

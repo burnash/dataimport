@@ -232,7 +232,7 @@
       i;
 
     for (i = 0, len = columnValues.length; i < len; i += 1) {
-      value = columnValues[i];
+      value = columnValues[i] || '';
       if (!value.match(regex)) {
         noMatch.push({
           value: value,
