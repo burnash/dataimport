@@ -55,10 +55,7 @@ gulp.task('scripts:dev', ['hint', 'vendor:dev'], function () {
 
 gulp.task('scripts:dist', ['hint'], function () {
   return gulp.src(src.js)
-    .pipe(debug())
-    .pipe(sourcemaps.init())
     .pipe(concat(DIST_FILENAME))
-    .pipe(sourcemaps.write())
     .pipe(gulp.dest(DIST_ROOT))
 });
 
