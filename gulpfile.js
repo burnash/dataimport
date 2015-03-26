@@ -11,7 +11,8 @@ var gulp = require('gulp'),
   sourcemaps = require('gulp-sourcemaps');
 
 var DEV_ROOT = 'build/dev',
-    DIST_ROOT = 'build/dist';
+    DIST_ROOT = 'build/dist',
+    DIST_FILENAME = 'dataimport.js';
 
 var src = {
   vendorCSS: 'vendor_modules/**/*.css',
@@ -42,7 +43,10 @@ gulp.task('hint', function () {
 
 gulp.task('scripts:dev', ['hint', 'vendor:dev'], function () {
   return gulp.src(src.js.concat(src.devJS))
+    .pipe(debug())
+    .pipe(sourcemaps.init())
     .pipe(concat('all.js'))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(DEV_ROOT))
     .pipe(reload({
       stream: true
@@ -53,12 +57,9 @@ gulp.task('scripts:dist', ['hint'], function () {
   return gulp.src(src.js)
     .pipe(debug())
     .pipe(sourcemaps.init())
-    .pipe(concat('all.js'))
+    .pipe(concat(DIST_FILENAME))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(DIST_ROOT))
-    .pipe(reload({
-      stream: true
-    }));
 });
 
 gulp.task('vendor:dev', function () {
@@ -94,3 +95,7 @@ gulp.task('serve', function () {
   gulp.watch(src.css, ['styles:dev']);
   gulp.watch(src.html, ['html:dev']);
 });
+
+gulp.task('build', [
+  'scripts:dist'
+]);
