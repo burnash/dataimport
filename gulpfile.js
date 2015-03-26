@@ -11,8 +11,8 @@ var gulp = require('gulp'),
   sourcemaps = require('gulp-sourcemaps');
 
 var DEV_ROOT = 'build/dev',
-    DIST_ROOT = 'build/dist',
-    DIST_FILENAME = 'dataimport.js';
+  DIST_ROOT = 'build/dist',
+  DIST_NAME = 'dataimport';
 
 var src = {
   vendorCSS: 'vendor_modules/**/*.css',
@@ -31,7 +31,8 @@ var src = {
     'src/scripts/dropfile.js',
     'src/scripts/main.js'
   ],
-  css: 'src/css/**/*.css',
+  css: ['src/css/dataimport.css'],
+  devCSS: ['src/css/main.css'],
   html: 'src/*.html',
 };
 
@@ -39,6 +40,12 @@ gulp.task('hint', function () {
   return gulp.src(src.js).pipe(hint('.jshintrc'))
     .pipe(hint.reporter(stylish))
     .pipe(hint.reporter('fail'));
+});
+
+gulp.task('vendor:dev', function () {
+  return gulp.src(src.vendorJS)
+    .pipe(concat('vendor.js'))
+    .pipe(gulp.dest(DEV_ROOT));
 });
 
 gulp.task('scripts:dev', ['hint', 'vendor:dev'], function () {
@@ -55,23 +62,23 @@ gulp.task('scripts:dev', ['hint', 'vendor:dev'], function () {
 
 gulp.task('scripts:dist', ['hint'], function () {
   return gulp.src(src.js)
-    .pipe(concat(DIST_FILENAME))
-    .pipe(gulp.dest(DIST_ROOT))
-});
-
-gulp.task('vendor:dev', function () {
-  return gulp.src(src.vendorJS)
-    .pipe(concat('vendor.js'))
-    .pipe(gulp.dest(DEV_ROOT));
+    .pipe(concat(DIST_NAME + '.js'))
+    .pipe(gulp.dest(DIST_ROOT));
 });
 
 gulp.task('styles:dev', function () {
-  return gulp.src([src.vendorCSS, src.css])
+  return gulp.src(src.vendorCSS.concat(src.css))
     .pipe(concat('all.css'))
     .pipe(gulp.dest(DEV_ROOT))
     .pipe(reload({
       stream: true
     }));
+});
+
+gulp.task('styles:dist', function () {
+  return gulp.src(src.css)
+    .pipe(concat(DIST_NAME + '.css'))
+    .pipe(gulp.dest(DIST_ROOT));
 });
 
 gulp.task('html:dev', function () {
@@ -94,5 +101,5 @@ gulp.task('serve', function () {
 });
 
 gulp.task('build', [
-  'scripts:dist'
+  'scripts:dist', 'styles:dist'
 ]);
