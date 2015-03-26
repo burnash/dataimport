@@ -25,7 +25,7 @@ var src = {
     'src/scripts/sheet.js',
     'src/scripts/dataimport.js',
     'src/scripts/validators.js',
-  ]
+  ],
   devJS: [
     'src/scripts/dropfile.js',
     'src/scripts/main.js'
