@@ -10,7 +10,8 @@ var gulp = require('gulp'),
   debug = require('gulp-debug'),
   sourcemaps = require('gulp-sourcemaps');
 
-var DEV_ROOT = 'build/dev';
+var DEV_ROOT = 'build/dev',
+    DIST_ROOT = 'build/dist';
 
 var src = {
   vendorCSS: 'vendor_modules/**/*.css',
@@ -22,9 +23,11 @@ var src = {
   ],
   js: [
     'src/scripts/sheet.js',
-    'src/scripts/dropfile.js',
     'src/scripts/dataimport.js',
     'src/scripts/validators.js',
+  ]
+  devJS: [
+    'src/scripts/dropfile.js',
     'src/scripts/main.js'
   ],
   css: 'src/css/**/*.css',
@@ -38,12 +41,21 @@ gulp.task('hint', function () {
 });
 
 gulp.task('scripts:dev', ['hint', 'vendor:dev'], function () {
+  return gulp.src(src.js.concat(src.devJS))
+    .pipe(concat('all.js'))
+    .pipe(gulp.dest(DEV_ROOT))
+    .pipe(reload({
+      stream: true
+    }));
+});
+
+gulp.task('scripts:dist', ['hint'], function () {
   return gulp.src(src.js)
     .pipe(debug())
     .pipe(sourcemaps.init())
     .pipe(concat('all.js'))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest(DEV_ROOT))
+    .pipe(gulp.dest(DIST_ROOT))
     .pipe(reload({
       stream: true
     }));
