@@ -9,6 +9,7 @@
     this.fields = options.fields;
     this.data = options.data;
     this.afterColumnChange = options.afterColumnChange;
+    this.height = options.height;
 
     var _this = this,
       boldRenderer,
@@ -237,8 +238,7 @@
       rowHeaders: true,
       data: _this.data,
 
-      width: 700,
-      height: 400,
+      height: _this.height,
 
       contextMenu: true,
       manualColumnMove: false,

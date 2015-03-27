@@ -7,6 +7,7 @@
     options = options || {};
     this.data = options.data;
     this.fields = options.fields;
+    this.sheetHeight = options.sheetHeight;
 
     function mapFields(fields, data) {
       var fuse = new Fuse(fields, {
@@ -45,6 +46,7 @@
       mapping: mapping,
       fields: this.fields,
       data: this.data,
+      height: this.sheetHeight,
       afterColumnChange: function (columnIndex) {
         _this.sheet.clearMarkedCellsInColumn(columnIndex);
         _this.validateColumn(columnIndex);
