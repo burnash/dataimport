@@ -95,7 +95,7 @@ gulp.task('serve', function () {
     server: DEV_ROOT
   });
 
-  gulp.watch(src.js, ['scripts:dev']);
+  gulp.watch(src.js.concat(src.devJS), ['scripts:dev']);
   gulp.watch(src.css, ['styles:dev']);
   gulp.watch(src.html, ['html:dev']);
 });

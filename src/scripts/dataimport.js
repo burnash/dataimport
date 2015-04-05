@@ -10,19 +10,22 @@
     this.sheetHeight = options.sheetHeight;
 
     function mapFields(fields, data) {
-      var fuse = new Fuse(fields, {
-          keys: ['name']
-        }),
+      var fuse = new Fuse(data[0]),
+        obj = {},
+        mapping = [],
+        len,
+        i;
 
-        mapping = data[0].map(function (x) {
-          var result = fuse.search(x);
+      fields.map(function (x) {
+        var result = fuse.search(x.id);
+        if (result.length) {
+          obj[result[0]] = x.id;
+        }
+      });
 
-          if (result.length) {
-            return result[0].id;
-          }
-
-          return null;
-        });
+      for (i = 0, len = data[0].length; i < len; i += 1) {
+        mapping.push(obj[i] ? obj[i] : null);
+      }
 
       return mapping;
     }
