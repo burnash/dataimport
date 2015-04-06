@@ -1,4 +1,4 @@
-/*global window, Sheet, Fuse*/
+/*global window, Sheet*/
 
 (function (window, Sheet) {
   'use strict';
@@ -8,27 +8,7 @@
     this.data = options.data;
     this.fields = options.fields;
     this.sheetHeight = options.sheetHeight;
-
-    function mapFields(fields, data) {
-      var fuse = new Fuse(data[0]),
-        obj = {},
-        mapping = [],
-        len,
-        i;
-
-      fields.map(function (x) {
-        var result = fuse.search(x.id);
-        if (result.length) {
-          obj[result[0]] = x.id;
-        }
-      });
-
-      for (i = 0, len = data[0].length; i < len; i += 1) {
-        mapping.push(obj[i] ? obj[i] : null);
-      }
-
-      return mapping;
-    }
+    this.matchFields = options.matchFields;
 
     this.fields.toObject = function () {
       var len = this.length,
@@ -42,7 +22,7 @@
       return obj;
     };
 
-    var mapping = mapFields(this.fields, this.data),
+    var mapping = this.matchFields(this.fields, this.data),
       _this = this;
 
     this.sheet = new Sheet(containerElement, {
@@ -149,4 +129,4 @@
 
   window.DataImport = DataImport;
 
-}(window, Sheet, Fuse));
+}(window, Sheet));
