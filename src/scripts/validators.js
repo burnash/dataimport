@@ -329,7 +329,7 @@
    */
 
   DataImport.is.matchingRegex = function (regExpAndFlags, message) {
-    message = message || 'Wrong value format';
+    message = message || 'wrong value format';
 
     var regex = new RegExp(regExpAndFlags[0], regExpAndFlags[1]);
 
