@@ -7,32 +7,32 @@ JavaScript browser-based CSV importer with field to property mapping. Uses Hands
 ```javascript
 var is = DataImport.is;
 
-var containerElement = document.getElementById('handsontable-element');
+var containerElement = document.getElementById("handsontable-element");
 
 var dataimport = new DataImport(containerElement, {
   fields: [{
-    id: 'fullName',
-    name: 'Full Name',
+    id: "fullName",
+    name: "Full Name",
     required: true
   }, {
-    id: 'birthday',
-    name: 'Birthday',
+    id: "birthday",
+    name: "Birthday",
     required: false,
   }, {
-    id: 'contactType',
-    name: 'Contact Type',
+    id: "contactType",
+    name: "Contact Type",
     required: true,
-    choices: ['work', 'home'],
+    choices: ["work", "home"],
     validate: [
-      is.anyOf(['work', 'home'], "Wrong value")
+      is.anyOf(["work", "home"], "Wrong value")
     ]
   }, {
-    id: 'email',
-    name: 'Email',
+    id: "email",
+    name: "Email",
     required: true,
     validate: [
       is.unique(),
-      is.matchingRegex(['[^@]+@[^\.]+\..+'], "Incorrect Email Address")
+      is.matchingRegex(["[^@]+@[^\.]+\..+"], "Incorrect Email Address")
     ]
   }],
 });
