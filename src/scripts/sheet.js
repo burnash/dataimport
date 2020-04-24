@@ -306,15 +306,6 @@
         _this.mapping.splice(index, amount);
       },
 
-      // afterColumnMove: function (oldIndex, newIndex) {
-      //   console.log('afterColumnMove', oldIndex, newIndex);
-      //   if (oldIndex === newIndex) {
-      //     return;
-      //   }
-      //   var temp = _this.mapping.splice(oldIndex, 1);
-      //   _this.mapping.splice(newIndex, 0, temp[0]);
-      // },
-
       cells: function (r) {
         if (r === 0) {
           this.renderer = boldRenderer;
