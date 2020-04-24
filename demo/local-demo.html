@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Import CSV Demo</title>
+        <link rel="stylesheet" media="screen" href="../vendor_modules/handsontable.full.css">
+        <link rel="stylesheet" media="screen" href="../src/css/dataimport.css">
+        <link rel="stylesheet" media="screen" href="demo.css">
+    </head>
+    <body>
+        <div style="display: flex;">
+            <div id="left">
+                <div id="drop">Drag a file here</div>
+
+                <button class="btn btn-default btn-submit">Submit</button>
+
+            </div>
+            <div id="right">
+                <div class="validation-errors" style="color: #a94442; display: none;">
+                    Errors:
+                    <ul class="errors">
+
+                    </ul>
+                </div>
+
+                <div id="hot" style="overflow: scroll" class="handsontable"></div>
+                <div class="result">
+                    <pre></pre>
+                </div>
+            </div>
+        </div>
+
+        <script src="../vendor_modules/jquery.min.js"></script>
+        <script src="../vendor_modules/handsontable.full.js"></script>
+        <script src="../vendor_modules/papaparse.js"></script>
+        <script src="../vendor_modules/fuse.js"></script>
+        <script src="../src/scripts/sheet.js"></script>
+        <script src="../src/scripts/dataimport.js"></script>
+        <script src="../src/scripts/validators.js"></script>
+        <script src="../src/scripts/dropfile.js"></script>
+        <script src="demo.js"></script>
+    </body>
+</html>
