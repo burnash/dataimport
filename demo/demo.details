@@ -4,17 +4,15 @@
  authors:
    - Anton Burnashev
  resources:
-   - http://some.url.com/some/file.js
-   - http://other.url.com/other_filename.css
-        https://raw.githubusercontent.com/burnash/dataimport/master/vendor_modules/handsontable.full.css
-        https://raw.githubusercontent.com/burnash/dataimport/master/src/css/dataimport.css
-        https://raw.githubusercontent.com/burnash/dataimport/master/vendor_modules/jquery.min.js
-        https://raw.githubusercontent.com/burnash/dataimport/master/vendor_modules/handsontable.full.js
-        https://raw.githubusercontent.com/burnash/dataimport/master/vendor_modules/papaparse.js
-        https://raw.githubusercontent.com/burnash/dataimport/master/vendor_modules/fuse.js
-        https://raw.githubusercontent.com/burnash/dataimport/master/src/scripts/sheet.js
-        https://raw.githubusercontent.com/burnash/dataimport/master/src/scripts/dataimport.js
-        https://raw.githubusercontent.com/burnash/dataimport/master/src/scripts/validators.js
-        https://raw.githubusercontent.com/burnash/dataimport/master/src/scripts/dropfile.js
+   - https://raw.githubusercontent.com/burnash/dataimport/master/vendor_modules/handsontable.full.css
+   - https://raw.githubusercontent.com/burnash/dataimport/master/src/css/dataimport.css
+   - https://raw.githubusercontent.com/burnash/dataimport/master/vendor_modules/jquery.min.js
+   - https://raw.githubusercontent.com/burnash/dataimport/master/vendor_modules/handsontable.full.js
+   - https://raw.githubusercontent.com/burnash/dataimport/master/vendor_modules/papaparse.js
+   - https://raw.githubusercontent.com/burnash/dataimport/master/vendor_modules/fuse.js
+   - https://raw.githubusercontent.com/burnash/dataimport/master/src/scripts/sheet.js
+   - https://raw.githubusercontent.com/burnash/dataimport/master/src/scripts/dataimport.js
+   - https://raw.githubusercontent.com/burnash/dataimport/master/src/scripts/validators.js
+   - https://raw.githubusercontent.com/burnash/dataimport/master/src/scripts/dropfile.js
  normalize_css: no
  load_type: d
