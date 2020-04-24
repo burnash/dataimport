@@ -7,6 +7,7 @@
 
   $(document).ready(function () {
     var containerEl = document.getElementById("hot");
+    var dataimport;
 
     var fields = [
       {
@@ -59,18 +60,6 @@
       return mapping;
     };
 
-    var testData = [
-      ["name", "birthday", "contact type", "email"],
-      ["John A. Davis", "June 6, 1953", "work", "john@example.com"],
-    ];
-
-    var dataimport = new DataImport(containerEl, {
-      fields: fields,
-      data: testData,
-      sheetHeight: 300,
-      matchFields: matchFields,
-    });
-
     function complete(results) {
       if (results.errors) {
         console.log(results.errors);
@@ -83,7 +72,7 @@
       dataimport = new DataImport(containerEl, {
         fields: fields,
         data: results.data,
-        sheetHeight: 300,
+        sheetHeight: 200,
         matchFields: matchFields,
       });
     }
@@ -112,6 +101,11 @@
     dropFile({
       target: document.getElementById("drop"),
       onload: parse,
+    });
+
+    $(".use-example-csv").click(function () {
+        parse(window._dataimportExampleCSV);
+        return false;
     });
 
     $(".btn-submit").click(function () {

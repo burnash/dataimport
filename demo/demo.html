@@ -2,8 +2,11 @@
     <div id="left">
         <div id="drop">Drag a file here</div>
 
-        <button class="btn btn-default btn-submit">Submit</button>
+        <div class="use-example-csv">
+            <a href="https://raw.githubusercontent.com/burnash/dataimport/master/demo/demo.csv">Use an example CSV</a>
+        </div>
 
+        <button class="btn btn-default btn-submit">Validate</button>
     </div>
     <div id="right">
         <div class="validation-errors" style="color: #a94442; display: none;">
@@ -19,3 +22,12 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+window._dataimportExampleCSV = `name,birthday,contact type,email
+Eleanor Blackburn,"November 25, 1964",home,eleanor64@example.com
+John A. Davis,"June 6, 1953",work,john@example.com
+Fai Chen,"March 31, 1977",work,faichen@example.com
+Tanja Weiss,"October 24, 1946",work,tanja@example.com
+John Doe,"June 6, 1953",work,john@example.com`;
+</script>

@@ -29,6 +29,11 @@ body {
     height:168px
 }
 
+.use-example-csv {
+    text-align: center;
+    padding: 30px 0 0;
+}
+
 .validation-errors {
     margin-bottom: 20px;
 }
