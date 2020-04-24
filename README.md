@@ -1,6 +1,11 @@
 # DataImport.js
 
-JavaScript browser-based CSV importer with field to property mapping. Uses Handsontable to display data.
+Simple JavaScript browser-based CSV importer.
+
+Features:
+ * Uses Handsontable to display data.
+ * Field to property mapping.
+ * Data validation.
 
 ## Example
 
