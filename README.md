@@ -7,6 +7,8 @@ Features:
  * Field to property mapping.
  * Data validation.
 
+[Demo on JSFiddle](https://jsfiddle.net/gh/get/library/pure/burnash/dataimport/tree/master/demo/)
+
 ## Example
 
 ```javascript
