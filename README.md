@@ -2,7 +2,7 @@
 
 Simple JavaScript browser-based CSV importer. 
 
-Inspired by Patrick McKenzie's [Design and Implementation of CSV/Excel Upload for SaaS](https://www.kalzumeus.com/2015/01/28/design-and-implementation-of-csvexcel-upload-for-saas/). DataImport is built on top of [Handsontable](https://handsontable.com/) and lets you do CSV input data pre-validation on in the browser.
+Inspired by Patrick McKenzie's [Design and Implementation of CSV/Excel Upload for SaaS](https://www.kalzumeus.com/2015/01/28/design-and-implementation-of-csvexcel-upload-for-saas/). DataImport is built on top of [Handsontable](https://handsontable.com/) and lets you do CSV input data pre-validation in the browser.
 
 [Demo on JSFiddle](https://jsfiddle.net/gh/get/library/pure/burnash/dataimport/tree/master/demo/)
 
