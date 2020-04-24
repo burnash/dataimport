@@ -15,7 +15,7 @@ body {
 }
 
 #left {
-    width:188px;
+    width: 188px;
     height: 400px;
     margin: 40px;
     float: left;
@@ -23,7 +23,6 @@ body {
 
 #right {
     margin-top: 40px;
-    margin-left: 40px;
 }
 
 #header {
