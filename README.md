@@ -4,7 +4,7 @@ Simple JavaScript browser-based CSV importer.
 
 Inspired by Patrick McKenzie's [Design and Implementation of CSV/Excel Upload for SaaS](https://www.kalzumeus.com/2015/01/28/design-and-implementation-of-csvexcel-upload-for-saas/). DataImport is built on top of [Handsontable](https://handsontable.com/) and lets you do CSV input data pre-validation in the browser.
 
-[Demo on JSFiddle](https://jsfiddle.net/gh/get/library/pure/burnash/dataimport/tree/master/demo/)
+[Demo on JSFiddle](https://jsfiddle.net/gh/get/library/pure/burnash/dataimport/tree/master/demo/) (Click **Run** or Cmd/Ctrl + Enter to launch it)
 
 ## Example 
 
@@ -69,4 +69,4 @@ Here's what happens in the demo.
 
 4. When there are no errors `DataImport.validate` calls `complete` callback with resulting data (array of arrays). This is your parced CSV data.
 
-Check [Demo on JSFiddle](https://jsfiddle.net/gh/get/library/pure/burnash/dataimport/tree/master/demo/)
+Check [Demo on JSFiddle](https://jsfiddle.net/gh/get/library/pure/burnash/dataimport/tree/master/demo/) (Click **Run** or Cmd/Ctrl + Enter to launch it)
