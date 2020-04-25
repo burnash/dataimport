@@ -55,7 +55,7 @@ dataimport.validate({
 
 Here's what happens in the demo.
 
-1. When the user adds a CSV file the fields in the files are matched to the `fields` described in `DataImport`. This example uses [Papa Parse](https://www.papaparse.com/) to load the data from CSV and [Fuse.js](https://fusejs.io/) to do fuzzy matching of fields.
+1. When the user adds a CSV file the fields in the file are matched to the `fields` described in `DataImport`. This example uses [Papa Parse](https://www.papaparse.com/) to load the data from CSV and [Fuse.js](https://fusejs.io/) to do fuzzy matching of fields.
 
 ![alt text](demo/example-loaded-csv.png)
 
