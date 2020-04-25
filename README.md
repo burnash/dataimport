@@ -39,7 +39,7 @@ var dataimport = new DataImport(containerElement, {
       is.matchingRegex(["[^@]+@[^\.]+\..+"], "Incorrect Email Address")
     ]
   }],
-  ...
+  // ...
 });
 
 dataimport.validate({
